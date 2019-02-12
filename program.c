@@ -1,8 +1,12 @@
 #include <stdio.h>
+#include <ctype.h>
 
-int main() {
+extern char token_buffer[]; 
 
+int main() {    
     printf("HOLA MUNDO ");
-    
 	return 0;
+    
+    
+  
 }
