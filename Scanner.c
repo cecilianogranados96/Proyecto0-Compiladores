@@ -50,14 +50,25 @@ token scanner(void){
         return SCANEOF;
     while((in_char = getchar()) != EOF){
         if(isspace(in_char))
-            continue;
+            continue; /* do nothing */
         else if (isalpha(in_char)){
+            /*
+            * ID ::= LETTER | ID LETTER
+            *               | ID DIGIT
+            *               | ID UNDERSCORE
+            *
+            */
             buffer_char(in_char);
             for(c = getchar(); isalnum(c) || c == '_' ; c = getchar())
                 buffer_char(c);
             ungetc(c,stdin);
             return check_reserved();
         }else if (isdigit(in_char)){
+            /*
+            * ID ::= DIGIT | 
+            *              | INTLITERAL DIGIT
+            *
+            */
             buffer_char(in_char);
             for(c=getchar();isdigit(c);c=getchar())
                 buffer_char(c);
@@ -74,6 +85,7 @@ token scanner(void){
         else if (in_char == '+')
             return PLUSOP;
         else if (in_char == ':'){
+            /* Looking for ":=" */
             c = getchar();
             if (c == '=')
                 return ASSIGNOP;
