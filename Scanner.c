@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <ctype.h>
+#include <stdlib.h>
+#include <string.h>
 
 typedef enum token_types {
     BEGIN,
@@ -36,11 +38,18 @@ token check_reserved() {
 }
 
 void clear_buffer(){
-    //DEBERIA DE LIMPIAR EL VECTOR token_buffer
+    free(token_buffer);
+    token_buffer="";
 }
 
 void buffer_char(int c){
-    //DEBERIA DE INSERTAR "C" EN EL VECTOR token_buffer
+    size_t len = strlen(token_buffer);
+    char *str2 = malloc(len + 2);
+    strcpy(str2, token_buffer);
+    str2[len] = c;
+    str2[len + 1] = '\0';
+    free(token_buffer);
+    token_buffer=str2;
 }
 
 token scanner(void){
