@@ -1,191 +1,172 @@
+#include <ctype.h>
 #include <stdio.h>
-typedef enum token_types {
-    BEGIN,
-    END,
-    READ,
-    WRITE,
-    ID,
-    INTLITERAL,
-    LPAREN,
-    RPAREN,
-    SEMICOLON,
-    COMMA,
-    ASSIGNOP,
-    PLUSOP,
-    MINUSOP,
-    SCANEOF,
-    TRUE
-} token;
+#include <string.h>
 
-extern token scanner (void);
+#include "headers/parser.h"
+#include "headers/semantic.h"
+#include "headers/fAuxs.h"
 
-void parse()
-{
-    system_goal();
-}
+/* -------------- PROCEDIMIENTOS DE ANALISIS SINTACTICO (PAS) -------------- */
 void system_goal(void)
 {
-  program();
-  match(SCANEOF);
+    /* <objetivo> -> <programa> FDT #terminar */
+    program();
+    Match(FDT);
+    finish();
 }
 
 void program(void)
 {
-  match(BEGIN);
-  statement_list();
-  match(END);
+    /* <programa> -> #comenzar BEGIN <listastatements> END */
+    start();
+    Match(BEGIN);
+    statement_list();
+    Match(END);
 }
 
 void statement_list(void)
 {
-  statement();
-  while (TRUE){
-    switch(next_token()){
-      case ID:
-      case READ:
-      case WRITE:
-        statement();
-        break;
-      default:
-        return;
+    /* <listastatements> -> <sentencia> {<sentencia>} */
+    statement();
+    while ( 1 )
+    {
+        switch ( next_token() )
+        {
+        case ID : case READ : case WRITE :
+            statement();
+            break;
+        default : return;
+        }
     }
-  }
 }
 
 void statement(void)
 {
-  token tok = next_token();
-  switch(tok){
-    case ID:
-      match(ID);
-      match(ASSIGNOP);
-      expression();
-      match(SEMICOLON);
-      break;
-
-    case READ:
-      match(READ);
-      match(LPAREN);
-      id_list();
-      match(RPAREN);
-      match(SEMICOLON);
-      break;
-
-    case WRITE:
-      match(WRITE);
-      match(LPAREN);
-      expr_list();
-      match(RPAREN);
-      match(SEMICOLON);
-      break;
-
-    default:
-      printf("Syntax error: %d ", tok );
-      //syntax_error(tok);
-      break;
-
-  }
+    TOKEN tok = next_token();
+    REG_EXPRESION izq, der;
+    switch ( tok )
+    {
+        case ID :
+            /* <sentencia>-> ID := <expresion> #asignar ; */
+            Identificador(&izq);
+            Match(ASSIGNOP);
+            Expresion(&der);
+            assign(izq, der);
+            Match(SEMICOLON);
+            break;
+        case READ :
+            /* <sentencia> -> READ ( <listaIdentificadores> ) */
+            Match(READ);
+            Match(LPAREN);
+            id_list();
+            Match(RPAREN);
+            Match(SEMICOLON);
+            break;
+        case WRITE :
+            /* <sentencia> -> WRITE ( <listaExpresiones> ) */
+            Match(WRITE);
+            Match(LPAREN);
+            expr_list();
+            Match(RPAREN);
+            Match(SEMICOLON);
+            break;
+        default :
+            return;
+    }
 }
 
 void id_list(void)
 {
-  match(ID);
-  while (next_token() == COMMA){
-    match(COMMA);
-    match(ID);
-  }
+    /* <listaIdentificadores> -> <identificador> #leer_id {COMMA <identificador> #leer_id} */
+    TOKEN t;
+    REG_EXPRESION reg;
+    Identificador(&reg);
+    read_id(reg);
+    for ( t = next_token(); t == COMMA; t = next_token() )
+    {
+        Match(COMMA);
+        Identificador(&reg);
+        read_id(reg);
+    }
+
 }
 
-void expression(void)
+void Identificador(REG_EXPRESION * resultado)
 {
-  token t;
-  primary();
-  for (t = next_token(); t == PLUSOP || t == MINUSOP; t = next_token()){
-    add_op();
-    primary();
-  }
+    /* <identificador> -> ID #procesar_id */
+    Match(ID);
+    *resultado = process_id();
 }
 
 void expr_list(void)
 {
-  while (next_token() == COMMA){
-    match(COMMA);
-    expression();
-  }
-}
-
-void add_op(void)
-{
-  token tok = next_token();
-  if (tok == PLUSOP || tok == MINUSOP)
-    match(tok);
-  else
-    printf("Syntax error: %d", tok );
-    //syntax_error(tok);
-}
-
-void primary(void)
-{
-  token tok = next_token();
-  switch (tok) {
-    case LPAREN:
-      match(LPAREN);
-      expression();
-      match(RPAREN);
-      break;
-
-    case ID:
-      match(ID);
-      break;
-
-    case INTLITERAL:
-      match(INTLITERAL);
-      break;
-
-    default:
-      printf("Syntax error: %d", tok );
-      //syntax_error(tok);
-      break;
-  }
-}
-
-/*MicroScanner::Token MicroParser::GetNextToken()
-{
-    MicroScanner::Token token;
-    MicroScanner::TokenClass tokenClass;
-
-    if (m_currentToken)
-        token = *m_currentToken;
-    else
+    /* <listaExpresiones> -> <expresion> #escribir_exp {COMMA <expresion> #escribir_exp} */
+    TOKEN t;
+    REG_EXPRESION reg;
+    Expresion(&reg);
+    write_expr(reg);
+    for ( t = next_token(); t == COMMA; t = next_token() )
     {
-        token = m_scanner.GetToken();
-        m_currentToken = std::make_shared<MicroScanner::Token>(token);
+        Match(COMMA);
+        Expresion(&reg);
+        write_expr(reg);
     }
-
-    return token;
 }
 
-void MicroParser::Match(MicroScanner::TokenClass toMatch)
+void Expresion(REG_EXPRESION * resultado)
 {
-    MicroScanner::Token token;
-
-    if (m_currentToken)
+    /* <expresion> -> <primaria> { <operadorAditivo> <primaria> #gen_infijo } */
+    REG_EXPRESION operandoIzq, operandoDer;
+    char op[MAXIDLEN];
+    TOKEN t;
+    primary(&operandoIzq);
+    for ( t = next_token(); t == PLUSSOP || t == MINUSOP; t = next_token() )
     {
-        token = *m_currentToken;
-        m_currentToken.reset();
+        add_op(op);
+        primary(&operandoDer);
+        operandoIzq = gen_infix(operandoIzq, op, operandoDer);
+    }
+    *resultado = operandoIzq;
+}
+
+void primary(REG_EXPRESION * resultado)
+{
+    TOKEN tok = next_token();
+    switch ( tok )
+    {
+        case ID :
+            /* <primaria> -> <identificador> */
+            Identificador(resultado);
+            break;
+        case INTLITERAL :
+            /* <primaria> -> INTLITERAL #procesar_cte */
+            Match(INTLITERAL);
+            *resultado = process_literal();
+            break;
+        case LPAREN :
+            /* <primaria> -> LPAREN <expresion> RPAREN */
+            Match(LPAREN);
+            Expresion(resultado);
+            Match(RPAREN);
+            break;
+        default :
+            return;
+    }
+}
+
+void add_op(char * resultado)
+{
+    /* <operadorAditivo> -> PLUSSOP #procesar_op | MINUSOP #procesar_op */
+    TOKEN t = next_token();
+    if ( t == PLUSSOP || t == MINUSOP )
+    {
+        Match(t);
+        strcpy(resultado, process_op());
     }
     else
-        token = m_scanner.GetToken();
+        sintax_error();
+}
 
-    MicroScanner::TokenClass tokenClass = token.first;
 
-    if (tokenClass == toMatch)
-    {
-        const std::string& tokenValue = token.second;
-        std::cout << "Matched \"" << tokenValue << "\"" << std::endl;
-    }
-    else
-    {
-        std::cout << "Syntax error!" << std::endl;
-    }
-}*/
+
+

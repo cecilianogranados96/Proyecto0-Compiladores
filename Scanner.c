@@ -1,114 +1,96 @@
-#include <stdio.h>
 #include <ctype.h>
+#include <stdio.h>
+#include <string.h>
 
-typedef enum token_types {
-    BEGIN,
-    END,
-    READ,
-    WRITE,
-    ID,
-    INTLITERAL,
-    LPAREN,
-    RPAREN,
-    SEMICOLON,
-    COMMA,
-    ASSIGNOP,
-    PLUSOP,
-    MINUSOP,
-    SCANEOF
-} token;
+#include "headers/scanner.h"
 
-extern token scanner (void);
-
+extern FILE * in;
 extern char token_buffer[];
 
 
-void lexical_error(char c) {
-	printf("lexical error : can\'t recognize %c this character",c);
-}
+/* -------------------  SCANNER ------------------- */
+TOKEN scanner()
+{
+    int tabla[rowTS][ColumnsTS] = { {  1,  3,  5,  6,  7,  8,  9, 10, 11, 14, 13,  0, 14 },
+                                       {  1,  1,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2 },
+                                       { 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14 },
+                                       {  4,  3,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
+                                       { 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14 },
+                                       { 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14 },
+                                       { 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14 },
+                                       { 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14 },
+                                       { 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14 },
+                                       { 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14 },
+                                       { 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14 },
+                                       { 14, 14, 14, 14, 14, 14, 14, 14, 14, 12, 14, 14, 14 },
+                                       { 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14 },
+                                       { 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14 },
+                                       { 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14 } };
+    int character;
+    int col;
+    int state = 0;
+    int i = 0;
+    do
+    {
+        character = fgetc(in);
+        col = colTS(character);
+        state = tabla[state][col];
+        if ( col != 11 )
+        {
+            token_buffer[i] = character;
+            i++;
+        }
+    }while ( !stateFinal(state) && !(state == 14) );
 
-token check_reserved() {
-	const static char *ReserveWord[4] = { "begin", "end", "read", "write" };
-	for (int i = 0; i < 4; i++)
-		if (token_buffer == ReserveWord[i])
-			return (token) i;
-	return ID;
-}
-
-void clear_buffer(){
-    //DEBERIA DE LIMPIAR EL VECTOR token_buffer
-}
-
-void buffer_char(int c){
-    //DEBERIA DE INSERTAR "C" EN EL VECTOR token_buffer
-}
-
-token scanner(void){
-    int in_char,c;
-    clear_buffer();
-    if(feof(stdin))
-        return SCANEOF;
-    while((in_char = getchar()) != EOF){
-        if(isspace(in_char))
-            continue; /* do nothing */
-        else if (isalpha(in_char)){
-            /*
-            * ID ::= LETTER | ID LETTER
-            *               | ID DIGIT
-            *               | ID UNDERSCORE
-            *
-            */
-            buffer_char(in_char);
-            for(c = getchar(); isalnum(c) || c == '_' ; c = getchar())
-                buffer_char(c);
-            ungetc(c,stdin);
-            return check_reserved();
-        }else if (isdigit(in_char)){
-            /*
-            * ID ::= DIGIT | 
-            *              | INTLITERAL DIGIT
-            *
-            */
-            buffer_char(in_char);
-            for(c=getchar();isdigit(c);c=getchar())
-                buffer_char(c);
-            ungetc(c,stdin);
+    token_buffer[i] = '\0';
+    switch ( state )
+    {
+        case 2 :
+            if ( col != 11 )
+            {
+            ungetc(character,in);
+            token_buffer[i-1] = '\0';
+            }
+            return ID;
+        case 4 :
+            if ( col != 11 )
+            {
+            ungetc(character, in);
+            token_buffer[i-1] = '\0';
+            }
             return INTLITERAL;
-        } else if (in_char == '(')
-            return LPAREN;
-        else if (in_char == ')')
-            return RPAREN;
-        else if (in_char == ';')
-            return SEMICOLON;
-        else if (in_char == ',')
-            return COMMA;
-        else if (in_char == '+')
-            return PLUSOP;
-        else if (in_char == ':'){
-            /* Looking for ":=" */
-            c = getchar();
-            if (c == '=')
-                return ASSIGNOP;
-            else{
-                ungetc(c,stdin);
-                lexical_error(in_char);
-            }
-        }else if (in_char == '-'){
-            c = getchar();
-            if (c == '-'){
-                do 
-                    in_char = getchar();
-                while (in_char != '\n');
-            } else {
-                ungetc(c,stdin);
-                return MINUSOP;
-            }
-        } else 
-            lexical_error(in_char);
+        case 5 : return PLUSSOP;
+        case 6 : return MINUSOP;
+        case 7 : return LPAREN;
+        case 8 : return RPAREN;
+        case 9 : return COMMA;
+        case 10 : return SEMICOLON;
+        case 12 : return ASSIGNOP;
+        case 13 : return FDT;
+        case 14 : return LEXICALERROR;
     }
+    return 0;
 }
 
-int main() {    
-    printf("HOLA MUNDO ");
-	return 0;
+int stateFinal(int e)
+{
+    if ( e == 0 || e == 1 || e == 3 || e == 11 || e == 14 ) return 0;
+    return 1;
+}
+
+int colTS(int c)
+{
+    if ( isalpha(c) ) return 0;
+    if ( isdigit(c) ) return 1;
+    if ( c == '+' ) return 2;
+    if ( c == '-' ) return 3;
+    if ( c == '(' ) return 4;
+    if ( c == ')' ) return 5;
+    if ( c == ',' ) return 6;
+    if ( c == ';' ) return 7;
+    if ( c == ':' ) return 8;
+    if ( c == '=' ) return 9;
+    if ( c == EOF ) return 10;
+    if ( isspace(c) ) return 11;
+    return 12;
 }
