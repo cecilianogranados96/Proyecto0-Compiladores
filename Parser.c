@@ -166,7 +166,3 @@ void add_op(char * resultado)
     else
         sintax_error();
 }
-
-
-
-

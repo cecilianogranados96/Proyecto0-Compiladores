@@ -2,6 +2,7 @@
 #define SCANNER_H_
 
 	#include "micro.h"
+    #include "fAuxs.h"
 
 	TOKEN scanner();
 	int colTS(int c);

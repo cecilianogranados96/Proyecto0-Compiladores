@@ -7,7 +7,22 @@
 
 	typedef enum
 	{
-	    BEGIN, END, READ, WRITE, ID, INTLITERAL, LPAREN, RPAREN, SEMICOLON, COMMA, ASSIGNOP, PLUSSOP, MINUSOP, FDT, LEXICALERROR
+	    BEGIN, 
+        END, 
+        READ, 
+        WRITE, 
+        ID, 
+        INTLITERAL, 
+        LPAREN, 
+        RPAREN, 
+        SEMICOLON, 
+        COMMA, 
+        ASSIGNOP, 
+        PLUSSOP, 
+        MINUSOP, 
+        FDT, 
+        LEXICALERROR,
+        SCANEOF
 	} TOKEN;
 
 	typedef struct

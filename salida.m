@@ -1,0 +1,13 @@
+Syntax Error
+Declare ,Integer,
+Declare Temp&1,Integer,
+pυZιώ ,,Temp&1
+Declare Temp&2,Integer,
+`½e Temp&1,,Temp&2
+Store Temp&2,,
+Syntax Error
+Store ,,
+Syntax Error
+Syntax Error
+Syntax Error
+Halt ,,

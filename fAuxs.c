@@ -36,6 +36,12 @@ void lexical_error()
     fprintf(out, "Lexical Error\n");
     
 }
+void lexical_error2(char c)
+{
+    printf("\t Lexical Error %d \n",c);
+    fprintf(out, "Lexical Error\n");
+    
+}
 
 void sintax_error()
 {
