@@ -5,6 +5,27 @@
 	#define ColumnsTS 13
 	#define MAXIDLEN 32+1
 
+typedef enum token_types
+{
+	BEGIN,		//0
+	END,		//1
+	READ,		//2
+	WRITE,		//3
+	ID,		//4
+	INTLITERAL,	//5
+	LPAREN,		//6
+	RPAREN,		//7
+	SEMICOLON,	//8
+	COMMA,		//9
+	ASSIGNOP,	//10
+	PLUSSOP,	//11
+	MINUSOP,	//12
+	SCANEOF,
+    LEXICALERROR
+} TOKEN;
+
+
+/*
 	typedef enum
 	{
 	    BEGIN, 
@@ -23,13 +44,19 @@
         FDT, 
         LEXICALERROR,
         SCANEOF
-	} TOKEN;
-
+	} TOKEN1;
+*/
 	typedef struct
 	{
 	    char lexema_identifier[MAXIDLEN];
 	    TOKEN t;
 	} RegTS;
+
+
+typedef struct Token{
+    TOKEN type;
+    char tok[1025];
+}Token;
 
 
 	typedef struct

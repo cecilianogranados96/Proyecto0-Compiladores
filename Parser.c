@@ -11,7 +11,7 @@ void system_goal(void)
 {
     /* <objetivo> -> <programa> FDT #terminar */
     program();
-    Match(FDT);
+    Match(SCANEOF);
     finish();
 }
 

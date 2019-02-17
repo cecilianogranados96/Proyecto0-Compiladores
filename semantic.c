@@ -46,7 +46,7 @@ void write_expr(REG_EXPRESION out)
     generate("Write",  extract(&out), "Integer", "");
 }
 
-REG_EXPRESION gen_infix(REG_EXPRESION e1, char * op, REG_EXPRESION e2)
+REG_EXPRESION gen_infix(REG_EXPRESION e1, char *op, REG_EXPRESION e2)
 {
 /* Genera la instruccion para una operacion infija y construye un registro semantico con el resultado */
     REG_EXPRESION reg;
@@ -54,6 +54,10 @@ REG_EXPRESION gen_infix(REG_EXPRESION e1, char * op, REG_EXPRESION e2)
     char cadTemp[MAXIDLEN] ="Temp&";
     char cadNum[MAXIDLEN];
     char cadOp[MAXIDLEN];
+    //printf ("%d",op[0]);
+    //printf("\t OPERACION: %c",op[0]);
+    
+    
     if ( op[0] == '-' ) strcpy(cadOp, "Sub");
     if ( op[0] == '+' ) strcpy(cadOp, "Add");
     sprintf(cadNum, "%d", numTemp);

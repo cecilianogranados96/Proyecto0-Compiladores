@@ -10,7 +10,7 @@ extern char token_buffer[];
 
 
 /* -------------------  SCANNER ------------------- */
-TOKEN scanner()
+token scanner()
 {
     int tabla[rowTS][ColumnsTS] = {    {  1,  3,  5,  6,  7,  8,  9, 10, 11, 14, 13,  0, 14 },
                                        {  1,  1,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2 },

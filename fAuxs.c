@@ -23,6 +23,7 @@ TOKEN next_token()
     if ( !flagToken )
     {
         token = scanner();
+        printf(" NEXT TOKEN: %d \n",token);
         if ( token == LEXICALERROR ) lexical_error();
         flagToken = 1;
         if ( token == ID ) lookup(token_buffer, &token);

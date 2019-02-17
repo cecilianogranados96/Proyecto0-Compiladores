@@ -1,1 +1,1 @@
-begin A := BB - 314 + A ; end
+begin A := BB - 314 + A ; end SCANEOF

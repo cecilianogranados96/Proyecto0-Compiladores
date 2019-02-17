@@ -6,108 +6,127 @@
 #include "headers/scanner.h"
 
 
-extern TOKEN scanner (void);
 
-extern char token_buffer[];
+char token_buffer[200];
 
-extern FILE * in;
+FILE *in;
+/*Descrito por el libro, la idea es guardar el token actual*/
+TOKEN current_token = SCANEOF;
+TOKEN next;
+int flag=0; //0=falso
+int flag_next_token=0;
+	
 
-
-TOKEN check_reserved() {
-	const static char *ReserveWord[4] = { "begin", "end", "read", "write" };
-	for (int x = 0; x < 4; x++){
-        printf("OJO: %s -- %s \n", token_buffer, ReserveWord[x]);
-		if (token_buffer == ReserveWord[x]){
-            printf("I VALE OJO: %d \n ",x);
-			return x;
-        }
-    }
-    printf("ID OJO: %d \n",ID);
-    
-	return ID;
+void clear_buffer(void){
+	//Borra el buffer de token buffer.
+	memset(token_buffer,'\0',strlen(token_buffer));
 }
 
-void clear_buffer(){
-    memset(token_buffer, 0, strlen(token_buffer));
+void buffer_char(int x){
+	//Convierte el entero a caracter y lo agrega al token_buffer
+	if (strlen(token_buffer)==0){
+		char dato=(char)x;
+		char auxiliar[]={(char)x,'\0'};
+		strcat(token_buffer,auxiliar);
+	}
+	else{
+	char dato=(char)x;
+	 char auxiliar[]={dato,'\0'};
+ 	 strcat(token_buffer,auxiliar);
+	 
+	}
+} 
+
+
+
+TOKEN check_reserved(){
+	//Revise el token_buffer y si este es una palabra reservada retorna el token al que pertenece
+	if ((strcmp(token_buffer,"READ")==0) || (strcmp(token_buffer,"read")==0)){
+		return READ;}
+	if ((strcmp(token_buffer,"WRITE")==0) || (strcmp(token_buffer,"write")==0)){
+		return WRITE;}
+	if ((strcmp(token_buffer,"BEGIN")==0) || (strcmp(token_buffer,"begin")==0)){
+		return BEGIN;}
+	if ((strcmp(token_buffer,"END")==0) || (strcmp(token_buffer,"end")==0)){
+		return END;
+	}
+	else{
+	 return ID;
+  }
 }
 
-void buffer_char(char c){
-    size_t len = strlen(token_buffer);
-    clear_buffer();
-    token_buffer[len+1] = c;
-}
 
-
-TOKEN scanner(){
-    
+TOKEN scanner(void)
+{
     int in_char,c;
+
+	clear_buffer();
+	if (feof(in))
+		return SCANEOF;
+
+	while (feof(in)==0){
+		in_char=fgetc(in);
+		if (isspace(in_char))
+			continue; /*do nothing */
+		else if (isalpha(in_char)){
+			/*
+				ID::=LETTER | ID LETTER
+							| ID DIGIT
+							| ID UNDERSCORE
+			*/
+			buffer_char(in_char);
+			for (c= fgetc(in);isalnum(c)||c=='-';c=fgetc(in))
+				buffer_char(c);
+				ungetc(c,stdin);
+				return check_reserved();
+
+		}else if (isdigit(in_char)){
+			/*
+				INTLITERAL :: = DIGIT |
+								INTLITERAL DIGIT
+			*/
+			buffer_char(in_char);
+			for (c=fgetc(in);isdigit(c);c=fgetc(in))
+				buffer_char(c);
+			ungetc(c,stdin);
+			return INTLITERAL;
+		}else if (in_char== '(')
+			return LPAREN;
+		else if (in_char==')')
+			return RPAREN;
+		else if (in_char==';')
+			return SEMICOLON ;
+		else if (in_char==',')
+			return COMMA ;
+		else if (in_char=='+')
+			return  PLUSSOP;
     
-    clear_buffer();
-    
-    if(feof(stdin))
-        return SCANEOF;
-    
-    while((in_char = fgetc(in)) != EOF){
-        //printf("%d",in_char);
-        
-        if(isspace(in_char))
-            continue;
-        
-        if (isalpha(in_char)){
-            buffer_char(in_char);
-            for(c = fgetc(in); isalnum(c) || c == '_' ; c = fgetc(in))
-                buffer_char(c);
-            ungetc(c,in);
-            return check_reserved();
-        } 
-        
-        if (isdigit(in_char)){
-            buffer_char(in_char);
-            for(c = fgetc(in);  isdigit(c); c = fgetc(in))
-                buffer_char(c);
-            ungetc(c,in);
-            return INTLITERAL;
-        } 
-        
-        if (in_char == '(')
-            return LPAREN;
-        
-        if (in_char == ')')
-            return RPAREN;
-        
-        if (in_char == ';')
-            return SEMICOLON;
-        
-        if (in_char == ',')
-            return COMMA;
-        
-        if (in_char == '+')
-            return PLUSSOP;
-        
-        
-        if (in_char == ':'){
-            c = fgetc(in);
-            if (c == '=')
-                return ASSIGNOP;
-            else{
-                ungetc(c,in);
-                lexical_error2(in_char);
-            }
-        } 
-        
-        if (in_char == '-'){
-            c = fgetc(in);
-            if (c == '-'){
-                do 
-                    in_char = fgetc(in);
-                while (in_char != '\n');
-            } else {
-                ungetc(c,in);
-                return MINUSOP;
-            }
-        } 
-        
-        lexical_error2(in_char);
-    }
-    
+		else if (in_char==':'){
+			/*looking for ":="*/
+			c=fgetc(in);
+			if (c=='=')
+				return ASSIGNOP ;
+			else{
+				ungetc(c,stdin);
+				lexical_error2(in_char);
+			}		
+		}
+	
+		else if (in_char=='-'){
+			/*is it --;comment start */
+			c=fgetc(in);
+			if (c=='-'){
+				do 
+					in_char=fgetc(in);
+				while (in_char!='\n');
+
+			} else{
+				ungetc(c,stdin);
+				return MINUSOP;
+			}
+		}else 
+			lexical_error2(in_char);
+		}
 }
+
+
