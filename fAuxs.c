@@ -23,7 +23,7 @@ TOKEN next_token()
     if ( !flagToken )
     {
         token = scanner();
-        printf(" NEXT TOKEN: %d \n",token);
+        //printf(" NEXT TOKEN: %d \n",token);
         if ( token == LEXICALERROR ) lexical_error();
         flagToken = 1;
         if ( token == ID ) lookup(token_buffer, &token);
@@ -35,13 +35,13 @@ void lexical_error()
 {
     printf("\t Lexical Error\n");
     fprintf(out, "Lexical Error\n");
-    
+
 }
 void lexical_error2(char c)
 {
     printf("\t Lexical Error %d \n",c);
     fprintf(out, "Lexical Error\n");
-    
+
 }
 
 void sintax_error()
@@ -108,7 +108,7 @@ void check_id(char * s)
 void start(void)
 {
     /* Inicializaciones Semanticas */
-    
+
 }
 
 void finish(void)
