@@ -56,7 +56,11 @@ void generate(char * accion, char * a, char * b, char * c)
     printf("%s %s%c%s%c%s\n", accion, a, ',', b, ',', c);
     fprintf(out,"%s %s%c%s%c%s\n", accion, a, ',', b, ',', c );
 }
+//////////////
 
+//semrecs.c line 26, 114+
+
+//////////////
 char *  extract(REG_EXPRESION * preg)
 {
     /* Retorna la cadena del registro semantico */
