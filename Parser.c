@@ -43,7 +43,7 @@ void statement_list(void)
 void statement(void)
 {
     TOKEN tok = next_token();
-    REG_EXPRESION izq, der;
+    REG_EXPRESION izq, der;    
     switch ( tok )
     {
         case ID :
@@ -123,6 +123,8 @@ void Expresion(REG_EXPRESION * resultado)
     for ( t = next_token(); t == PLUSSOP || t == MINUSOP; t = next_token() )
     {
         add_op(op);
+        //for (int i =0;i<MAXIDLEN;i++)
+            //printf(" \t \t \t OP: %c \n",op[i]);
         primary(&operandoDer);
         operandoIzq = gen_infix(operandoIzq, op, operandoDer);
     }
@@ -161,7 +163,10 @@ void add_op(char * resultado)
     if ( t == PLUSSOP || t == MINUSOP )
     {
         Match(t);
+        //printf("ENTREEEEEEEEEEE : %d \n",t);
+        
         strcpy(resultado, process_op());
+       
     }
     else
         sintax_error();

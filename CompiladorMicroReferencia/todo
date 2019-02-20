@@ -1,0 +1,43 @@
+
+del parser "parser.c":
+
+	falta agregarle el semantic processing al parser
+
+
+
+
+
+
+############## COMPLETO ###########
+
+
+de las rutinas semanticas "semrecs.c"
+
+	funcion generate();
+		genera codigo asm
+	fucion extract();
+		extra informacion de las structs en semrecs.h
+
+	structs de las rutinas semanticas?
+		estan dentro de semrecs.h
+del symbol table, estan en "semrecs.c"
+
+	funcion lookup();
+		busca un string en el simbol table
+	funcion enter();
+		ingresa un string al simbol table
+
+	donde esta el simbol table?
+		va a ser un struct o un array dentro de semrecs.h, aun no estoy seguro
+
+del parser "parser.c":
+
+	funcion match();
+		llama al scanner para hacer match de token
+	funcion next_token():
+		retorna el siguiente token
+	funcion snytax_error();
+		devuelve un error de sintvaxis
+
+	variable global current_token:
+		donde se guarda el token si match hacematch

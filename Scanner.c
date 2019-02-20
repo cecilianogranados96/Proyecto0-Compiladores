@@ -48,7 +48,9 @@ TOKEN check_reserved(){
 	if ((strcmp(token_buffer,"BEGIN")==0) || (strcmp(token_buffer,"begin")==0)){
 		return BEGIN;}
 	if ((strcmp(token_buffer,"END")==0) || (strcmp(token_buffer,"end")==0)){
-		return END;
+		return END;}
+    if ((strcmp(token_buffer,"SCANEOF")==0) || (strcmp(token_buffer,"scaneof")==0)){
+		return SCANEOF;
 	}
 	else{
 	 return ID;
@@ -98,8 +100,10 @@ TOKEN scanner(void)
 			return SEMICOLON ;
 		else if (in_char==',')
 			return COMMA ;
-		else if (in_char=='+')
+		else if (in_char=='+'){
+            buffer_char(in_char);
 			return  PLUSSOP;
+        }
     
 		else if (in_char==':'){
 			/*looking for ":="*/
@@ -111,7 +115,6 @@ TOKEN scanner(void)
 				lexical_error2(in_char);
 			}		
 		}
-	
 		else if (in_char=='-'){
 			/*is it --;comment start */
 			c=fgetc(in);
@@ -122,11 +125,13 @@ TOKEN scanner(void)
 
 			} else{
 				ungetc(c,stdin);
+                buffer_char(in_char);
 				return MINUSOP;
 			}
 		}else 
 			lexical_error2(in_char);
 		}
+    return SCANEOF;
 }
 
 

@@ -1,0 +1,22 @@
+## este no es un archivo de codigo
+## lo estoy poniendo aqui solo para tener el grammar en la compu facil de ver y no en las fotocopias
+## ademas lo pongo con los Action Symbols como vienen en las fotocopias
+
+<program>		#start begin <statement list> end
+<statement list>	<statement> {<statement>}
+<statement>		<ident> := <expression> #assign ;
+<statement>		read ( <id list> ) ;
+<statement>		write ( <expr list> ) ;
+<id list>		<ident> #read_id (, <ident> #read_id )
+<expr list>		<expression> #write_expr 
+				{, <expression> #write_expr)
+<expression>		<primary>
+				{<add op> <primary> #gen_infix}
+<primary>		{ <expression> }
+<primary>		<ident>
+<primary>		INTLITERAL #prcess_literal
+<add op>		PLUSOP #process_op
+<add op>		MINUSOP #process_op
+<ident>			ID #process_id
+<system goal>		<program> SCANEOF #finish
+

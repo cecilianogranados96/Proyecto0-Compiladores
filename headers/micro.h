@@ -1,3 +1,4 @@
+#include <string.h>
 #ifndef MICRO_H_
 #define MICRO_H_
 	
@@ -22,8 +23,23 @@ typedef enum token_types
 	MINUSOP,	//12
 	SCANEOF,
     LEXICALERROR
-} TOKEN;
+} TOKEN;        
 
+typedef struct operator { /* for operators*/
+	enum op { PLUS, MINUS } operator;
+} op_rec;
+
+enum expr { INDEXPR, LITERALEXPR, TEMPEXPR };
+
+
+
+typedef struct expression {
+	enum expr kind;
+	union {
+		char * name;	/* for IDEXPR, TEMPEXPR */
+		int val;	/* for LITERALEXPR */
+	};
+} expr_rec;
 
 /*
 	typedef enum

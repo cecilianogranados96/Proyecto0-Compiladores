@@ -58,6 +58,24 @@ typedef struct Token{
     char tok[1025];
 }Token;
 
+typedef struct operator { /* for operators*/
+	enum op { PLUS, MINUS } operator;
+} op_rec;
+
+
+/* expression types */
+enum expr { INDEXPR, LITERALEXPR, TEMPEXPR };
+
+/* for <primary> and <expression> */
+typedef struct expression {
+	enum expr kind;
+	union {
+		string name;	/* for IDEXPR, TEMPEXPR */
+		int val;	/* for LITERALEXPR */
+	};
+} expr_rec;
+
+
 //////////////////////
 
 //semrecs.h line 15

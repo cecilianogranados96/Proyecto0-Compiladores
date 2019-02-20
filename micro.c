@@ -7,7 +7,7 @@
 
 FILE * in;
 FILE * out;
-RegTS TS[1000] = { {"begin", BEGIN}, {"end", END}, {"read", READ}, {"write", WRITE}, {"$", 99} };
+RegTS TS[1000] = { {"begin", BEGIN}, {"end", END}, {"read", READ}, {"write", WRITE},{"scaneof", SCANEOF}, {"$", 99} };
 char token_buffer[MAXIDLEN];
 TOKEN token;
 int flagToken = 0;

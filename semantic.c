@@ -31,6 +31,9 @@ REG_EXPRESION process_id(void)
 char * process_op(void)
 {
     /* Declare OP y construye el correspondiente registro semantico */
+    //printf("ESTA PROCESADO : %c \n",token_buffer);
+    //for (int i=0;i<MAXIDLEN;i++)
+        //printf("TOCKEN BUFFER: %c \n",token_buffer[i]);
     return token_buffer;
 }
 
@@ -56,7 +59,6 @@ REG_EXPRESION gen_infix(REG_EXPRESION e1, char *op, REG_EXPRESION e2)
     char cadOp[MAXIDLEN];
     //printf ("%d",op[0]);
     //printf("\t OPERACION: %c",op[0]);
-    
     
     if ( op[0] == '-' ) strcpy(cadOp, "Sub");
     if ( op[0] == '+' ) strcpy(cadOp, "Add");

@@ -61,11 +61,20 @@ void generate(char * accion, char * a, char * b, char * c)
 //semrecs.c line 26, 114+
 
 //////////////
+
+
+
+
 char *  extract(REG_EXPRESION * preg)
 {
     /* Retorna la cadena del registro semantico */
     return preg->name;
 }
+
+/*char * extract_op(op_rec record){
+	return (record.operator?"MINUS_OP":"PLUS_OP");
+}
+*/
 
 int lookup(char * id, TOKEN * t)
 {
@@ -86,7 +95,7 @@ int lookup(char * id, TOKEN * t)
 void enter(char * id)
 {
     /* Agrega un identificador a la TS */
-    int i = 4;
+    int i = 5;
     while ( strcmp("$", TS[i].lexema_identifier) ) i++;
     {
         if ( i < 999 )
@@ -126,3 +135,7 @@ void assign(REG_EXPRESION izq, REG_EXPRESION der)
     /* Genera la instruccion para la asignacion */
     generate("Store",  extract(&der), izq.name, "");
 }
+
+
+
+
