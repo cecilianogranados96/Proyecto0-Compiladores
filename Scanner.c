@@ -37,22 +37,23 @@ void buffer_char(int x){
 	}
 } 
 
-
-
 TOKEN check_reserved(){
 	//Revise el token_buffer y si este es una palabra reservada retorna el token al que pertenece
 	if ((strcmp(token_buffer,"READ")==0) || (strcmp(token_buffer,"read")==0)){
-		return READ;}
+		return READ;
+    }
 	if ((strcmp(token_buffer,"WRITE")==0) || (strcmp(token_buffer,"write")==0)){
-		return WRITE;}
+		return WRITE;
+    }
 	if ((strcmp(token_buffer,"BEGIN")==0) || (strcmp(token_buffer,"begin")==0)){
-		return BEGIN;}
+		return BEGIN;
+    }
 	if ((strcmp(token_buffer,"END")==0) || (strcmp(token_buffer,"end")==0)){
-		return END;}
+		return END;
+    }
     if ((strcmp(token_buffer,"SCANEOF")==0) || (strcmp(token_buffer,"scaneof")==0)){
 		return SCANEOF;
-	}
-	else{
+    }else{
 	 return ID;
   }
 }
@@ -109,10 +110,10 @@ TOKEN scanner(void)
 			/*looking for ":="*/
 			c=fgetc(in);
 			if (c=='=')
-				return ASSIGNOP ;
+				return ASSIGNOP;
 			else{
 				ungetc(c,stdin);
-				lexical_error2(in_char);
+				lexical_error();
 			}		
 		}
 		else if (in_char=='-'){
@@ -129,7 +130,7 @@ TOKEN scanner(void)
 				return MINUSOP;
 			}
 		}else 
-			lexical_error2(in_char);
+			lexical_error();
 		}
     return SCANEOF;
 }

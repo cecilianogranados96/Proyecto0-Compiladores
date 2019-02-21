@@ -6,7 +6,7 @@
 #include "headers/semantic.h"
 #include "headers/fAuxs.h"
 
-/* -------------- PROCEDIMIENTOS DE ANALISIS SINTACTICO (PAS) -------------- */
+/* -------------- PROCEDIMIENTOS DE ANALISIS SINTACTICO (PAR) -------------- */
 void system_goal(void)
 {
     /* <objetivo> -> <programa> FDT #terminar */
@@ -91,11 +91,11 @@ void id_list(void)
 
 }
 
-void Identificador(REG_EXPRESION * resultado)
+void Identificador(REG_EXPRESION * result)
 {
     /* <identificador> -> ID #procesar_id */
     Match(ID);
-    *resultado = process_id();
+    *result = process_id();
 }
 
 void expr_list(void)
@@ -113,42 +113,41 @@ void expr_list(void)
     }
 }
 
-void Expresion(REG_EXPRESION * resultado)
+void Expresion(REG_EXPRESION * result)
 {
     /* <expresion> -> <primaria> { <operadorAditivo> <primaria> #gen_infijo } */
-    REG_EXPRESION operandoIzq, operandoDer;
+    REG_EXPRESION left_operand, rigth_operand;
     char op[MAXIDLEN];
     TOKEN t;
-    primary(&operandoIzq);
+    primary(&left_operand);
     for ( t = next_token(); t == PLUSSOP || t == MINUSOP; t = next_token() )
     {
         add_op(op);
-        //for (int i =0;i<MAXIDLEN;i++)
-            //printf(" \t \t \t OP: %c \n",op[i]);
-        primary(&operandoDer);
-        operandoIzq = gen_infix(operandoIzq, op, operandoDer);
+        primary(&rigth_operand);
+        left_operand = gen_infix(left_operand, op, rigth_operand);
     }
-    *resultado = operandoIzq;
+    *result = left_operand;
 }
 
-void primary(REG_EXPRESION * resultado)
+
+void primary(REG_EXPRESION * result)
 {
     TOKEN tok = next_token();
     switch ( tok )
     {
         case ID :
             /* <primaria> -> <identificador> */
-            Identificador(resultado);
+            Identificador(result);
             break;
         case INTLITERAL :
             /* <primaria> -> INTLITERAL #procesar_cte */
             Match(INTLITERAL);
-            *resultado = process_literal();
+            *result = process_literal();
             break;
         case LPAREN :
             /* <primaria> -> LPAREN <expresion> RPAREN */
             Match(LPAREN);
-            Expresion(resultado);
+            Expresion(result);
             Match(RPAREN);
             break;
         default :
@@ -156,17 +155,14 @@ void primary(REG_EXPRESION * resultado)
     }
 }
 
-void add_op(char * resultado)
+void add_op(char * result)
 {
     /* <operadorAditivo> -> PLUSSOP #procesar_op | MINUSOP #procesar_op */
     TOKEN t = next_token();
     if ( t == PLUSSOP || t == MINUSOP )
     {
         Match(t);
-        //printf("ENTREEEEEEEEEEE : %d \n",t);
-        
-        strcpy(resultado, process_op());
-       
+        strcpy(result, process_op());
     }
     else
         sintax_error();

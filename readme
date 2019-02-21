@@ -1,6 +1,0 @@
-Ejecutar: 
-
-    make
-
-    ./micro_compiler tests/programa1.m tests/salida.m
-

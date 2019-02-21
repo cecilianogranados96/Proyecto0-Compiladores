@@ -1,10 +1,9 @@
 #include <string.h>
 #ifndef MICRO_H_
 #define MICRO_H_
-	
-	#define rowTS 15
-	#define ColumnsTS 13
-	#define MAXIDLEN 32+1
+#define rowTS 15
+#define ColumnsTS 13
+#define MAXIDLEN 32+1
 
 typedef enum token_types
 {
@@ -31,8 +30,6 @@ typedef struct operator { /* for operators*/
 
 enum expr { INDEXPR, LITERALEXPR, TEMPEXPR };
 
-
-
 typedef struct expression {
 	enum expr kind;
 	union {
@@ -41,45 +38,22 @@ typedef struct expression {
 	};
 } expr_rec;
 
-/*
-	typedef enum
-	{
-	    BEGIN, 
-        END, 
-        READ, 
-        WRITE, 
-        ID, 
-        INTLITERAL, 
-        LPAREN, 
-        RPAREN, 
-        SEMICOLON, 
-        COMMA, 
-        ASSIGNOP, 
-        PLUSSOP, 
-        MINUSOP, 
-        FDT, 
-        LEXICALERROR,
-        SCANEOF
-	} TOKEN1;
-*/
-	typedef struct
-	{
-	    char lexema_identifier[MAXIDLEN];
-	    TOKEN t;
-	} RegTS;
-
+typedef struct
+{
+    char lexema_identifier[MAXIDLEN];
+    TOKEN t;
+} RegTS;
 
 typedef struct Token{
     TOKEN type;
     char tok[1025];
 }Token;
 
-
-	typedef struct
-	{
-	    TOKEN clase;
-	    char name[MAXIDLEN];
-	    int value;
-	} REG_EXPRESION;
+typedef struct
+{
+    TOKEN clase;
+    char name[MAXIDLEN];
+    int value;
+} REG_EXPRESION;
 
 #endif

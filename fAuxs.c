@@ -23,7 +23,7 @@ TOKEN next_token()
     if ( !flagToken )
     {
         token = scanner();
-        //printf(" NEXT TOKEN: %d \n",token);
+        //printf("\t\t TOKEN: %d \n",token);
         if ( token == LEXICALERROR ) lexical_error();
         flagToken = 1;
         if ( token == ID ) lookup(token_buffer, &token);
@@ -35,13 +35,6 @@ void lexical_error()
 {
     printf("\t Lexical Error\n");
     fprintf(out, "Lexical Error\n");
-
-}
-void lexical_error2(char c)
-{
-    printf("\t Lexical Error %d \n",c);
-    fprintf(out, "Lexical Error\n");
-
 }
 
 void sintax_error()
@@ -52,29 +45,15 @@ void sintax_error()
 
 void generate(char * accion, char * a, char * b, char * c)
 {
-    /* Produce la salida de la instruccion para la MV por stdout */
     printf("%s %s%c%s%c%s\n", accion, a, ',', b, ',', c);
     fprintf(out,"%s %s%c%s%c%s\n", accion, a, ',', b, ',', c );
 }
-//////////////
-
-//semrecs.c line 26, 114+
-
-//////////////
-
-
-
 
 char *  extract(REG_EXPRESION * preg)
 {
     /* Retorna la cadena del registro semantico */
     return preg->name;
 }
-
-/*char * extract_op(op_rec record){
-	return (record.operator?"MINUS_OP":"PLUS_OP");
-}
-*/
 
 int lookup(char * id, TOKEN * t)
 {
@@ -121,7 +100,6 @@ void check_id(char * s)
 void start(void)
 {
     /* Inicializaciones Semanticas */
-
 }
 
 void finish(void)
@@ -135,7 +113,3 @@ void assign(REG_EXPRESION izq, REG_EXPRESION der)
     /* Genera la instruccion para la asignacion */
     generate("Store",  extract(&der), izq.name, "");
 }
-
-
-
-

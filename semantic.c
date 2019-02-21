@@ -1,7 +1,6 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
-
 #include "headers/semantic.h"
 #include "headers/fAuxs.h"
 
@@ -31,9 +30,6 @@ REG_EXPRESION process_id(void)
 char * process_op(void)
 {
     /* Declare OP y construye el correspondiente registro semantico */
-    //printf("ESTA PROCESADO : %c \n",token_buffer);
-    //for (int i=0;i<MAXIDLEN;i++)
-        //printf("TOCKEN BUFFER: %c \n",token_buffer[i]);
     return token_buffer;
 }
 
@@ -51,15 +47,12 @@ void write_expr(REG_EXPRESION out)
 
 REG_EXPRESION gen_infix(REG_EXPRESION e1, char *op, REG_EXPRESION e2)
 {
-/* Genera la instruccion para una operacion infija y construye un registro semantico con el resultado */
+    /* Genera la instruccion para una operacion infija y construye un registro semantico con el result */
     REG_EXPRESION reg;
     static unsigned int numTemp = 1;
     char cadTemp[MAXIDLEN] ="Temp&";
     char cadNum[MAXIDLEN];
-    char cadOp[MAXIDLEN];
-    //printf ("%d",op[0]);
-    //printf("\t OPERACION: %c",op[0]);
-    
+    char cadOp[MAXIDLEN];    
     if ( op[0] == '-' ) strcpy(cadOp, "Sub");
     if ( op[0] == '+' ) strcpy(cadOp, "Add");
     sprintf(cadNum, "%d", numTemp);
