@@ -225,12 +225,10 @@ void micro(){
 
 int main(int argc, char const *argv[]){
    
-	archivo=fopen("salida.txt","r+");
-    salida=fopen("out.txt","w+");
+	archivo=fopen("salida.m","r+");
+    salida=fopen("out.asm","w+");
 	micro();
 	fclose(salida);
 	fflush(stdout);
-	rename("out.txt","salida.asm");
-	//remove("salida.txt") ;
 	return 0;
 }

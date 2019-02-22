@@ -1,4 +1,5 @@
-begin
-A := BB - 44 + A;
-B := 8;
+begin 
+B := 30 + 40 ; 
+A := 200 - 314 + B ; 
+-- comentario
 end

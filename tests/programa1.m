@@ -1,1 +1,1 @@
-begin A := BB - 314 + A ; end
+begin  A := 300 + 400 - 500 + B ; end

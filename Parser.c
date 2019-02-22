@@ -113,9 +113,50 @@ void expr_list(void)
     }
 }
 
+
 void Expresion(REG_EXPRESION * result)
 {
-    /* <expresion> -> <primaria> { <operadorAditivo> <primaria> #gen_infijo } */
+    
+    REG_EXPRESION left_operand, rigth_operand;
+    char op[MAXIDLEN];
+    TOKEN t;
+    primary(&left_operand);
+    int calc_value = 0;
+    for ( t = next_token(); t == PLUSSOP || t == MINUSOP; t = next_token() )
+    {
+        add_op(op);
+   
+        primary(&rigth_operand);
+        if (left_operand.clase==INTLITERAL && rigth_operand.clase==INTLITERAL){
+            if (t == MINUSOP){
+                if(calc_value==0){
+					calc_value = left_operand.value - rigth_operand.value;
+				}else{
+					calc_value -= rigth_operand.value;
+				}
+            }else{
+                if(calc_value==0){
+					calc_value = left_operand.value + rigth_operand.value;;
+				}else{
+					calc_value += rigth_operand.value;
+				}
+            }
+			rigth_operand.value = calc_value;
+        
+            //printf("RIGTH OPERAND  CLASS: %d VALOR: %d \n",rigth_operand.clase,rigth_operand.value);
+            //printf("LEFT OPERAND  CLASS: %d VALOR: %d NAME: %d \n",left_operand.clase,left_operand.value,left_operand.name[0]);
+            printf("\t\t\t VALOR CALCULADOOOO: %d \n",calc_value);
+            
+		}
+		left_operand = gen_infix(left_operand, op, rigth_operand);
+    }
+    *result = left_operand;
+}
+
+
+/*
+void Expresion(REG_EXPRESION * result)
+{
     REG_EXPRESION left_operand, rigth_operand;
     char op[MAXIDLEN];
     TOKEN t;
@@ -128,6 +169,9 @@ void Expresion(REG_EXPRESION * result)
     }
     *result = left_operand;
 }
+*/
+
+
 
 
 void primary(REG_EXPRESION * result)
