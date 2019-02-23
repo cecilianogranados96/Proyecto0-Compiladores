@@ -14,7 +14,7 @@ extern int flagToken;
 /* -------------------  FUNCIONES AUXILIARES  ------------------- */
 void Match(TOKEN t)
 {
-    if ( !(t == next_token()) ) sintax_error();
+    if ( !(t == next_token()) ) sintax_error(t);
     flagToken = 0;
 }
 
@@ -24,27 +24,48 @@ TOKEN next_token()
     {
         token = scanner();
         //printf("\t\t TOKEN: %d \n",token);
-        if ( token == LEXICALERROR ) lexical_error();
+        if ( token == LEXICALERROR ) lexical_error(token);
         flagToken = 1;
         if ( token == ID ) lookup(token_buffer, &token);
     }
     return token;
 }
 
-void lexical_error()
+void lexical_error(int error)
 {
-    printf("\t Lexical Error\n");
+    printf("\t Lexical Error %d \n", error);
     fprintf(out, "Lexical Error\n");
 }
 
-void sintax_error()
+void sintax_error(TOKEN error)
 {
-    printf("\t Syntax Error\n");
-    fprintf(out, "Syntax Error\n");
+    char * mensaje;
+	switch(error){
+		case BEGIN: strcpy(mensaje,"Error de sintaxis: BEGIN"); break;
+		case END:  strcpy(mensaje,"Error de sintaxis: END"); break;
+		case READ:  strcpy(mensaje,"Error de sintaxis: READ"); break;
+		case WRITE:  strcpy(mensaje,"Error de sintaxis: WRITE"); break;
+		case ID:  strcpy(mensaje,"Error de sintaxis: ID"); break;
+		case INTLITERAL:  strcpy(mensaje,"Error de sintaxis: INTLITERAL"); break;
+		case LPAREN:  strcpy(mensaje,"Error de sintaxis: LPAREN"); break;
+		case RPAREN:  strcpy(mensaje,"Error de sintaxis: RPAREN"); break;
+		case SEMICOLON:  strcpy(mensaje,"Error de sintaxis: SEMICOLON"); break;
+		case COMMA:  strcpy(mensaje,"Error de sintaxis: COMMA"); break;
+		case ASSIGNOP:  strcpy(mensaje,"Error de sintaxis: ASSIGNOP"); break;
+		case PLUSSOP:  strcpy(mensaje,"Error de sintaxis: PLUSOP"); break;
+		case MINUSOP:  strcpy(mensaje,"Error de sintaxis: MINUSOP"); break;
+		case SCANEOF:  strcpy(mensaje,"Error de sintaxis: SCANEOF"); break;
+		
+		default: break;
+	}
+    
+    printf("%s \n", mensaje);
+    fprintf(out, "%s \n", mensaje);
 }
 
 void generate(char * accion, char * a, char * b, char * c)
 {
+   
     printf("%s %s%c%s%c%s\n", accion, a, ',', b, ',', c);
     fprintf(out,"%s %s%c%s%c%s\n", accion, a, ',', b, ',', c );
 }

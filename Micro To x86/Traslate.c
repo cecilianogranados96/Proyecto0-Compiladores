@@ -4,24 +4,15 @@
 #include <string.h>
 #define MAXIDLEN 33
 
-typedef char string[MAXIDLEN];
-
 char *table[100];
 int dim=0;
-void enter(string s){
-	table[dim]=strdup(s);
-	dim=dim +1;
-}
-
 char token_buffer[200];
 FILE *archivo;
 FILE *salida;
 
-#define MAXIDLEN 33
 typedef char string[MAXIDLEN];
-
+typedef char string[MAXIDLEN];
 extern void enter(string s);
-
 typedef enum tipos_palabras{
 	ADD,SUB,DECLARE,STORE,MOVE,HALT,FIN,VAR
 } palabras;
@@ -29,6 +20,11 @@ typedef enum tipos_palabras{
 //Variable para saber el temporal
 int val_temp=0;
 int var_ready=0;
+
+void enter(string s){
+	table[dim]=strdup(s);
+	dim=dim +1;
+}
 
 void clear_buffer(void){
 	//Borra el buffer de token buffer.
@@ -41,8 +37,7 @@ void buffer_char(int x){
 		char dato=(char)x;
 		char auxiliar[]={(char)x,'\0'};
 		strcat(token_buffer,auxiliar);
-	}
-	else{
+	}else{
 	   char dato=(char)x;
 	   char auxiliar[]={dato,'\0'};
  	   strcat(token_buffer,auxiliar);
@@ -165,9 +160,9 @@ void imprimir_variables(){
 		fprintf(salida,"%s : .word 24 \n",table[i]);
 	}
 }
+
 void declare(){
 	//Si no se han declarado las variables llama a imprimir variables. Y cambia la bandera para solo realizar una impresión
-	//de estas
 	escaner();
 	enter(token_buffer);
 	if (var_ready==0){
@@ -224,8 +219,7 @@ void micro(){
 }
 
 int main(int argc, char const *argv[]){
-   
-	archivo=fopen("salida.m","r+");
+	archivo=fopen("../salida.m","r+");
     salida=fopen("out.asm","w+");
 	micro();
 	fclose(salida);

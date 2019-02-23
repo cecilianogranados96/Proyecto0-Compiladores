@@ -26,19 +26,13 @@ typedef struct
     char lexema_identifier[MAXIDLEN];
     TOKEN t;
 } RegTS;
-
 typedef struct Token{
     TOKEN type;
     char tok[1025];
 }Token;
-
 typedef struct operator { /* for operators*/
 	enum op { PLUS, MINUS } operator;
 } op_rec;
-
-/* expression types */
-enum expr { INDEXPR, LITERALEXPR, TEMPEXPR };
-
 typedef struct
 {
     TOKEN clase;

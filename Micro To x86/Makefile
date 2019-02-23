@@ -1,8 +1,8 @@
 cli_exec:  com2 run
-	rm -rf MicroTox86
+	rm -rf Traslate
     
 run:
-	./MicroTox86
+	./Traslate
     
 com2:
-	gcc -o MicroTox86 MicroTox86.c -w
+	gcc -o Traslate Traslate.c -w

@@ -48,20 +48,39 @@ void write_expr(REG_EXPRESION out)
 REG_EXPRESION gen_infix(REG_EXPRESION e1, char *op, REG_EXPRESION e2)
 {
     /* Genera la instruccion para una operacion infija y construye un registro semantico con el result */
-    REG_EXPRESION reg;
+    REG_EXPRESION reg,e_rec;
     static unsigned int numTemp = 1;
     char cadTemp[MAXIDLEN] ="Temp&";
     char cadNum[MAXIDLEN];
     char cadOp[MAXIDLEN];    
+    
     if ( op[0] == '-' ) strcpy(cadOp, "Sub");
     if ( op[0] == '+' ) strcpy(cadOp, "Add");
+
     sprintf(cadNum, "%d", numTemp);
     numTemp++;
     strcat(cadTemp, cadNum);
+    
     if ( e1.clase == ID) check_id( extract(&e1));
     if ( e2.clase == ID) check_id( extract(&e2));
-    check_id(cadTemp);
-    generate(cadOp,  extract(&e1),  extract(&e2), cadTemp);
-    strcpy(reg.name, cadTemp);
-    return reg;
+    
+    //CONSTANT FOLDING SI SON DOS ENTEROS SEGUIDOS LOS CALCULA Y CONSTRUYE UNA NUEVA EXPRECION
+    if (e1.clase == INTLITERAL && e2.clase == INTLITERAL){
+            e_rec.clase = INTLITERAL;
+            strcpy(e_rec.name, cadTemp);
+            if ( op[0] == '-'){
+                e_rec.value = e1.value - e2.value;
+            }else{
+                e_rec.value = e1.value + e2.value;
+            }
+            sprintf(cadTemp, "%d", e_rec.value);        
+            //generate(cadOp, e1.name,  e_rec.name, cadTemp);
+            strcpy(e_rec.name, cadTemp);
+            return e_rec;
+	}else{
+        check_id(cadTemp); 
+        generate(cadOp, e1.name,  e2.name, cadTemp);
+        strcpy(reg.name, cadTemp);
+        return reg;
+    }
 }

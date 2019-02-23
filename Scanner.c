@@ -2,11 +2,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include "headers/scanner.h"
-
-
-
 char token_buffer[200];
 
 FILE *in;
@@ -15,7 +11,6 @@ TOKEN current_token = SCANEOF;
 TOKEN next;
 int flag=0; //0=falso
 int flag_next_token=0;
-	
 
 void clear_buffer(void){
 	//Borra el buffer de token buffer.
@@ -28,12 +23,10 @@ void buffer_char(int x){
 		char dato=(char)x;
 		char auxiliar[]={(char)x,'\0'};
 		strcat(token_buffer,auxiliar);
-	}
-	else{
-	char dato=(char)x;
-	 char auxiliar[]={dato,'\0'};
- 	 strcat(token_buffer,auxiliar);
-	 
+	}else{
+        char dato=(char)x;
+        char auxiliar[]={dato,'\0'};
+        strcat(token_buffer,auxiliar);
 	}
 } 
 
@@ -82,7 +75,6 @@ TOKEN scanner(void)
 				buffer_char(c);
 				ungetc(c,stdin);
 				return check_reserved();
-
 		}else if (isdigit(in_char)){
 			/*
 				INTLITERAL :: = DIGIT |
@@ -104,35 +96,29 @@ TOKEN scanner(void)
 		else if (in_char=='+'){
             buffer_char(in_char);
 			return  PLUSSOP;
-        }
-    
-		else if (in_char==':'){
+        }else if (in_char==':'){
 			/*looking for ":="*/
 			c=fgetc(in);
 			if (c=='=')
 				return ASSIGNOP;
 			else{
 				ungetc(c,stdin);
-				lexical_error();
+				lexical_error(in_char);
 			}		
-		}
-		else if (in_char=='-'){
+		}else if (in_char=='-'){
 			/*is it --;comment start */
 			c=fgetc(in);
 			if (c=='-'){
 				do 
 					in_char=fgetc(in);
 				while (in_char!='\n');
-
-			} else{
+			}else{
 				ungetc(c,stdin);
                 buffer_char(in_char);
 				return MINUSOP;
 			}
 		}else 
-			lexical_error();
-		}
+			lexical_error(in_char);
+    }
     return SCANEOF;
 }
-
-

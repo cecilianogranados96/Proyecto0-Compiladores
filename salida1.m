@@ -1,11 +1,6 @@
-Declare B,Integer,
-Declare Temp&1,Integer,
-Add 30,40,Temp&1
-Store Temp&1,B,
 Declare A,Integer,
-Declare Temp&2,Integer,
-Sub 200,314,Temp&2
+Declare B,Integer,
 Declare Temp&3,Integer,
-Add Temp&2,B,Temp&3
+Add 200,B,Temp&3
 Store Temp&3,A,
 Halt ,,
