@@ -88,13 +88,14 @@ REG_EXPRESION gen_infix(REG_EXPRESION e1, char *op, REG_EXPRESION e2)
 REG_EXPRESION conditional_expressions(REG_EXPRESION e1, REG_EXPRESION e2, REG_EXPRESION e3){
 
   REG_EXPRESION e_rec;
-  char cadTemp[MAXIDLEN] ="Temp&1";
-  char* e1_name, e2_name, e3_name;
+  char cadTemp[MAXIDLEN] ="Temp&";
   strcpy(e_rec.name, cadTemp);
   if(e1.value == 0){
     e_rec.value = e3.value;
   }else{
     e_rec.value = e2.value;
   }
+  sprintf(cadTemp, "%d", e_rec.value);
+  strcpy(e_rec.name, cadTemp);
   return e_rec;
 }
