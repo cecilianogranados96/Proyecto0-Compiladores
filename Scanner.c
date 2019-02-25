@@ -28,7 +28,7 @@ void buffer_char(int x){
         char auxiliar[]={dato,'\0'};
         strcat(token_buffer,auxiliar);
 	}
-} 
+}
 
 TOKEN check_reserved(){
 	//Revise el token_buffer y si este es una palabra reservada retorna el token al que pertenece
@@ -93,7 +93,9 @@ TOKEN scanner(void)
 			return SEMICOLON ;
 		else if (in_char==',')
 			return COMMA ;
-		else if (in_char=='+'){
+		else if (in_char == '|'){
+			return PIPE;
+		}else if (in_char=='+'){
             buffer_char(in_char);
 			return  PLUSSOP;
         }else if (in_char==':'){
@@ -104,12 +106,12 @@ TOKEN scanner(void)
 			else{
 				ungetc(c,stdin);
 				lexical_error(in_char);
-			}		
+			}
 		}else if (in_char=='-'){
 			/*is it --;comment start */
 			c=fgetc(in);
 			if (c=='-'){
-				do 
+				do
 					in_char=fgetc(in);
 				while (in_char!='\n');
 			}else{
@@ -117,7 +119,7 @@ TOKEN scanner(void)
                 buffer_char(in_char);
 				return MINUSOP;
 			}
-		}else 
+		}else
 			lexical_error(in_char);
     }
     return SCANEOF;

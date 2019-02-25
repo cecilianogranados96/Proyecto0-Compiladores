@@ -1,10 +1,4 @@
 Declare A,Integer,
-Declare Temp&1,Integer,
-Add 300,400,Temp&1
-Declare Temp&2,Integer,
-Sub Temp&1,500,Temp&2
-Declare B,Integer,
-Declare Temp&3,Integer,
-Add Temp&2,B,Temp&3
-Store Temp&3,A,
+Store Temp&1,A,
+Lexical Error
 Halt ,,

@@ -52,19 +52,19 @@ REG_EXPRESION gen_infix(REG_EXPRESION e1, char *op, REG_EXPRESION e2)
     static unsigned int numTemp = 1;
     char cadTemp[MAXIDLEN] ="Temp&";
     char cadNum[MAXIDLEN];
-    char cadOp[MAXIDLEN];    
-    
+    char cadOp[MAXIDLEN];
+
     if ( op[0] == '-' ) strcpy(cadOp, "Sub");
     if ( op[0] == '+' ) strcpy(cadOp, "Add");
 
     sprintf(cadNum, "%d", numTemp);
     numTemp++;
     strcat(cadTemp, cadNum);
-    
+
     if ( e1.clase == ID) check_id( extract(&e1));
     if ( e2.clase == ID) check_id( extract(&e2));
-    
-    //CONSTANT FOLDING SI SON DOS ENTEROS SEGUIDOS LOS CALCULA Y CONSTRUYE UNA NUEVA EXPRECION
+
+    //CONSTANT FOLDING SI SON DOS ENTEROS SEGUIDOS LOS CALCULA Y CONSTRUYE UNA NUEVA EXPRESION
     if (e1.clase == INTLITERAL && e2.clase == INTLITERAL){
             e_rec.clase = INTLITERAL;
             strcpy(e_rec.name, cadTemp);
@@ -73,14 +73,28 @@ REG_EXPRESION gen_infix(REG_EXPRESION e1, char *op, REG_EXPRESION e2)
             }else{
                 e_rec.value = e1.value + e2.value;
             }
-            sprintf(cadTemp, "%d", e_rec.value);        
+            sprintf(cadTemp, "%d", e_rec.value);
             //generate(cadOp, e1.name,  e_rec.name, cadTemp);
             strcpy(e_rec.name, cadTemp);
             return e_rec;
 	}else{
-        check_id(cadTemp); 
+        check_id(cadTemp);
         generate(cadOp, e1.name,  e2.name, cadTemp);
         strcpy(reg.name, cadTemp);
         return reg;
     }
+}
+
+REG_EXPRESION conditional_expressions(REG_EXPRESION e1, REG_EXPRESION e2, REG_EXPRESION e3){
+
+  REG_EXPRESION e_rec;
+  char cadTemp[MAXIDLEN] ="Temp&1";
+  char* e1_name, e2_name, e3_name;
+  strcpy(e_rec.name, cadTemp);
+  if(e1.value == 0){
+    e_rec.value = e3.value;
+  }else{
+    e_rec.value = e2.value;
+  }
+  return e_rec;
 }

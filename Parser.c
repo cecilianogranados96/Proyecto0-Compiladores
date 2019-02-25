@@ -43,7 +43,7 @@ void statement_list(void)
 void statement(void)
 {
     TOKEN tok = next_token();
-    REG_EXPRESION izq, der;    
+    REG_EXPRESION izq, der;
     switch ( tok )
     {
         case ID :
@@ -115,10 +115,27 @@ void expr_list(void)
 
 void Expresion(REG_EXPRESION * result)
 {
-    REG_EXPRESION left_operand, rigth_operand;
+    REG_EXPRESION left_operand,center_operand,rigth_operand;
     char op[MAXIDLEN];
     TOKEN t;
     primary(&left_operand);
+
+    if( t = next_token() == PIPE){
+      Match(PIPE);
+      primary(&center_operand);
+
+      if(t = next_token() == PIPE){
+  			Match(PIPE);
+  			primary(&rigth_operand);
+
+		  }else{
+  			sintax_error(t);
+  			return;
+		    }
+  		left_operand = conditional_expressions(left_operand, center_operand, rigth_operand);
+      *result = left_operand;
+      return;
+    }
     for ( t = next_token(); t == PLUSSOP || t == MINUSOP; t = next_token() )
     {
         add_op(op);

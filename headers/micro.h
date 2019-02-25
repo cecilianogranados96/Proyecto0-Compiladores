@@ -20,9 +20,10 @@ typedef enum token_types
 	ASSIGNOP,	//10
 	PLUSSOP,	//11
 	MINUSOP,	//12
-	SCANEOF,
-    LEXICALERROR
-} TOKEN;        
+	SCANEOF, //13
+	PIPE, //14
+    LEXICALERROR //15
+} TOKEN;
 
 typedef struct operator { /* for operators*/
 	enum op { PLUS, MINUS } operator;

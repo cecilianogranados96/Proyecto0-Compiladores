@@ -55,17 +55,18 @@ void sintax_error(TOKEN error)
 		case PLUSSOP:  strcpy(mensaje,"Error de sintaxis: PLUSOP"); break;
 		case MINUSOP:  strcpy(mensaje,"Error de sintaxis: MINUSOP"); break;
 		case SCANEOF:  strcpy(mensaje,"Error de sintaxis: SCANEOF"); break;
-		
+    case PIPE:  strcpy(mensaje,"Error de sintaxis: PIPE"); break;
+
 		default: break;
 	}
-    
+
     printf("%s \n", mensaje);
     fprintf(out, "%s \n", mensaje);
 }
 
 void generate(char * accion, char * a, char * b, char * c)
 {
-   
+
     printf("%s %s%c%s%c%s\n", accion, a, ',', b, ',', c);
     fprintf(out,"%s %s%c%s%c%s\n", accion, a, ',', b, ',', c );
 }
