@@ -119,8 +119,11 @@ TOKEN scanner(void)
                 buffer_char(in_char);
 				return MINUSOP;
 			}
-		}else
-			lexical_error(in_char);
+		}else{
+            //lexical_error(in_char); //ESTO ES UN CARACTER NO RECONOCIDO
+            //printf("ERROR AQUI");
+        }
+			
     }
     return SCANEOF;
 }

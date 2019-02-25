@@ -55,7 +55,7 @@ void sintax_error(TOKEN error)
 		case PLUSSOP:  strcpy(mensaje,"Error de sintaxis: PLUSOP"); break;
 		case MINUSOP:  strcpy(mensaje,"Error de sintaxis: MINUSOP"); break;
 		case SCANEOF:  strcpy(mensaje,"Error de sintaxis: SCANEOF"); break;
-    case PIPE:  strcpy(mensaje,"Error de sintaxis: PIPE"); break;
+        case PIPE:  strcpy(mensaje,"Error de sintaxis: PIPE"); break;
 
 		default: break;
 	}

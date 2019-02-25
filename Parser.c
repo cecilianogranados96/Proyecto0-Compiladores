@@ -120,11 +120,11 @@ void Expresion(REG_EXPRESION * result)
     TOKEN t;
     primary(&left_operand);
 
-    if( t = next_token() == PIPE){
+    if( (t = next_token()) == PIPE){
       Match(PIPE);
       primary(&center_operand);
 
-      if(t = next_token() == PIPE){
+      if((t = next_token()) == PIPE){
   			Match(PIPE);
   			primary(&rigth_operand);
 
