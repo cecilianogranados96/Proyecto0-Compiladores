@@ -168,7 +168,7 @@ void start(void)
     global      _start  		  \n \
                                   \n \
     ; Funciones con etiquetas para desplazarme por el archivo						\n \
-    ; //////////////////////////////////////////////////////////////////////////////////////////////////////////////// \n \n \
+    ; ///////////////////////////////////////////////////// \n \n \
     ; Funciones \n \
                                                     \n \
     ; # Atoi = edi -> contador; esi -> largo; eax -> número_final; \n \n \
@@ -206,27 +206,20 @@ void finish(void)
     generate("Halt", "", "", "");
     
     //**********ENSAMBLADOR**********************************************************************
-    char *messageFinish = "\t Salir del programa  \n  \
+    char *messageFinish = "\t  \
 	; ---------------------------  \n  \
 	mov eax, 1 \n \
 	int 0x80 \n ";
     fprintf(out_ensambler, "%s \n", messageFinish);
-    //**********ENSAMBLADOR**********************************************************************
-    
+    //**********ENSAMBLADOR**********************************************************************    
 }
-
-
-
 
 
 void assign(REG_EXPRESION izq, REG_EXPRESION der)
 {
     /* Genera la instruccion para la asignacion */
     generate("Store",  extract(&der), izq.name, "");
-    
-
-
-    
+        
     //**********ENSAMBLADOR**********************************************************************
     char *message;
 	if (der.clase == LITERALEXPR){
@@ -244,8 +237,4 @@ void assign(REG_EXPRESION izq, REG_EXPRESION der)
 	}
 	fprintf(out_ensambler, message, der.name, izq.name);
     //**********ENSAMBLADOR**********************************************************************
-
 }
-
-
-

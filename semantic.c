@@ -164,14 +164,10 @@ REG_EXPRESION gen_infix(REG_EXPRESION e1, char *op, REG_EXPRESION e2)
         }  
         fprintf(out_ensambler, message, op[0], e1.name, e2.name, op[0], e_rec.name);
         //**********ENSAMBLADOR**********************************************************************
-        
+
         
         return reg;
-    }
-    
-    
-    
-    
+    }    
 }
 
 REG_EXPRESION conditional_expressions(REG_EXPRESION e1, REG_EXPRESION e2, REG_EXPRESION e3){
