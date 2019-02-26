@@ -234,13 +234,13 @@ void assign(REG_EXPRESION izq, REG_EXPRESION der)
                     ; ---------------------------  \n \
                     mov eax, %s         \n \
                     mov [esp + %s], ax  \n \
-                    ; ---------------------------  \n \";
+                    ; ---------------------------  \n ";
 	}else{
 		message = "\t; mov destino, origen \n \
                     ; ---------------------------  \n \
                     mov eax, [esp + %s] \n \
                     mov [esp + %s], ax \n \
-                    ; ---------------------------  \n \";
+                    ; ---------------------------  \n ";
 	}
 	fprintf(out_ensambler, message, der.name, izq.name);
     //**********ENSAMBLADOR**********************************************************************
