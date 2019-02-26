@@ -1,1 +1,4 @@
-begin  A := 300 + 400 - 500 + B ; end
+begin  
+A := 300 + 400 ; 
+WRITE ( A ) ;
+end
