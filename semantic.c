@@ -39,6 +39,7 @@ void read_id(REG_EXPRESION in)
 {
     /* Genera la instruccion para leer */
     generate("Read", in.name, "Integer", "");
+<<<<<<< HEAD
 
     //**********ENSAMBLADOR**********************************************************************
     char *message = "\t; Leer de consola -> read \n \
@@ -63,12 +64,16 @@ void read_id(REG_EXPRESION in)
 	fprintf(out_ensambler, message, in.name);
     //**********ENSAMBLADOR**********************************************************************
 
+=======
+    
+>>>>>>> a9512c337e0da78c0e0aa203c579932183305237
 }
 
 void write_expr(REG_EXPRESION out)
 {
     /* Genera la instruccion para escribir */
     generate("Write",  extract(&out), "Integer", "");
+<<<<<<< HEAD
 
     //**********ENSAMBLADOR**********************************************************************
     char *message = "\t; Escribir en consola -> write \n \
@@ -90,6 +95,10 @@ void write_expr(REG_EXPRESION out)
 
 
 
+=======
+    
+    
+>>>>>>> a9512c337e0da78c0e0aa203c579932183305237
 }
 
 REG_EXPRESION gen_infix(REG_EXPRESION e1, char *op, REG_EXPRESION e2)
@@ -125,6 +134,7 @@ REG_EXPRESION gen_infix(REG_EXPRESION e1, char *op, REG_EXPRESION e2)
                 strcpy(arr, "add");
             }
             sprintf(cadTemp, "%d", e_rec.value);
+<<<<<<< HEAD
 
             //**********ENSAMBLADOR**********************************************************************
             char *messageTwoLi = "\t; %s Literal, result \n \
@@ -166,6 +176,14 @@ REG_EXPRESION gen_infix(REG_EXPRESION e1, char *op, REG_EXPRESION e2)
         //**********ENSAMBLADOR**********************************************************************
 
 
+=======
+            strcpy(e_rec.name, cadTemp);
+            return e_rec;
+	}else{
+        check_id(cadTemp);
+        generate(cadOp, e1.name,  e2.name, cadTemp);
+        strcpy(reg.name, cadTemp);   
+>>>>>>> a9512c337e0da78c0e0aa203c579932183305237
         return reg;
     }
 }

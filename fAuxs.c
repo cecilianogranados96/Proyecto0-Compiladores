@@ -117,15 +117,7 @@ void check_id(char * s)
     if ( !lookup(s, &t) )
     {
         enter(s);
-        generate("Declare", s, "Integer", "");
-        
-        
-        //**********ENSAMBLADOR**********************************************************************
-        char *message = " \n \tpush eax \n";
-        fprintf(out_ensambler, "%s", message);
-        //**********ENSAMBLADOR**********************************************************************
-        
-        
+        generate("Declare", s, "Integer", "");        
     }
 }
 
@@ -133,85 +125,13 @@ void start(void)
 {
     /* Inicializaciones Semanticas */
     
-    //**********ENSAMBLADOR**********************************************************************
-    char *messageData = "section     .data	  	  \n \
-											      \n \
-	;-------------------------------------------- \n \
-	; En esta sección se declaran las variables.  \n \
-	; Se reserva la memoria necesaria.			  \n \
-	; Se declaran las constantes.				  \n \
-	;-------------------------------------------  \n \
-												  \n \
-	global buffer_input   ; Buffer donde se almacenarán los valores.			\n \
-	global len_input	  ; largo del buffer.									\n \
-	global buffer_output  ; Buffer donde se escribirán los valores a imprimir.	\n \
-	global len_output	  ; largo del buffer.									\n \
-																				\n \
-	buffer_input  db '*******************************', 0xa						\n \
-	len_input      equ $ - buffer_input											\n \
-	buffer_output db '*******************************', 0xa                     \n \
-	len_output      equ $ - buffer_input 										\n \
-	\n ";
-    fprintf(out_ensambler, "%s \n", messageData);
-    char *messageText = "section     .text	  	\n \
-											 \n \
-	;----------------------------------------------- \n \
-	; En esta sección se realizan las operaciones. 	\n \
-	; Se escribe el código necesario para ejecutar.	\n \
-	; Realiza los llamados adecuados.				\n \
-	;---------------------------------------------- \n \
-                                                    \n \
-    extern buffer_input  	  	  \n \
-    extern len_input			  \n \
-    extern buffer_output		  \n \
-    extern len_output			  \n \
-    global      _start  		  \n \
-                                  \n \
-    ; Funciones con etiquetas para desplazarme por el archivo						\n \
-    ; ///////////////////////////////////////////////////// \n \n \
-    ; Funciones \n \
-                                                    \n \
-    ; # Atoi = edi -> contador; esi -> largo; eax -> número_final; \n \n \
-    atoi:						\n \
-        xor ecx, ecx   						; Limpio el buffer \n \
-        mov cl, [buffer_input + esi]  	 						 \n \
-        sub cl, '0'							; Convierto a decimal  \n \
-        mul ebx 								; Multiplico por diez  \n \
-        add eax, ecx 						; Agrego el caracter convertido \n \
-        inc esi 							\n \
-        cmp edi, esi 						; comparo si ya llegue al final \n \
-        jne atoi							; siga  \n \
-        ret     							 \n \n \n \
-    itoa:  						\n 	\
-        ; Me convierte a ASCII \n \n	\
-        xor edx, edx						; Limpio el registro edx  \n 	\
-        div ebx								; eax:dividendo y resultado, edx:residuo, ebx:divisor \n 	\
-        add dl, '0'							; Aplique la conversion a ASCII   \n 	\
-        mov [buffer_output + esi], dl 		; Mueva a resultado en la posicion (UM, C, D, U) \n 	\
-        dec esi								; Decremento la actual posición. \n 	\
-        cmp esi, 0							; Si ya llegue al inicio, ponga cero. \n 	\
-        jne itoa  							; Si no realice de nuevo	\n 	\
-                                            ; siga  \n \
-        ret 								\n \n \n \
-    _start:  	\n \n ; Code \n \
-        xor eax, eax \n ";
-	fprintf(out_ensambler, "%s \n", messageText);
-    //**********ENSAMBLADOR**********************************************************************
-    
 }
 
 void finish(void)
 {
     /* Genera la instruccion para terminar la ejecucion del programa */
     generate("Halt", "", "", "");
-    
-    //**********ENSAMBLADOR**********************************************************************
-    char *messageFinish = "\t  \
-	; ---------------------------  \n  \
-	mov eax, 1 \n \
-	int 0x80 \n ";
-    fprintf(out_ensambler, "%s \n", messageFinish);
-    //**********ENSAMBLADOR**********************************************************************    
+ 
 }
 
 
@@ -220,21 +140,4 @@ void assign(REG_EXPRESION izq, REG_EXPRESION der)
     /* Genera la instruccion para la asignacion */
     generate("Store",  extract(&der), izq.name, "");
         
-    //**********ENSAMBLADOR**********************************************************************
-    char *message;
-	if (der.clase == LITERALEXPR){
-		message = "\t; movLiteral destino, origen L \n \
-                    ; ---------------------------  \n \
-                    mov eax, %s         \n \
-                    mov [esp + %s], ax  \n \
-                    ; ---------------------------  \n ";
-	}else{
-		message = "\t; mov destino, origen \n \
-                    ; ---------------------------  \n \
-                    mov eax, [esp + %s] \n \
-                    mov [esp + %s], ax \n \
-                    ; ---------------------------  \n ";
-	}
-	fprintf(out_ensambler, message, der.name, izq.name);
-    //**********ENSAMBLADOR**********************************************************************
 }
