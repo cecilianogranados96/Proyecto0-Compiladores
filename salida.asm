@@ -32,7 +32,7 @@ section     .text
      global      _start  		  
                                    
      ; Funciones con etiquetas para desplazarme por el archivo						
-     ; //////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+     ; ///////////////////////////////////////////////////// 
  
      ; Funciones 
                                                      
@@ -71,32 +71,17 @@ section     .text
   
  
  	push eax 
-	; add Literal, result 
-             ; ---------------------------  
-             mov eax, Temp&1        
-             mov [esp + 700], ax   
-             ; ---------------------------  
  
- 	; mov destino, origen 
+ 	push eax 
+ 
+ 	push eax 
+ 
+ 	push eax 
+	; mov destino, origen 
                      ; ---------------------------  
-                     mov eax, [esp + 700] 
+                     mov eax, [esp + ] 
                      mov [esp + A], ax 
                      ; ---------------------------  
- 	; Escribir en consola -> write 
- 	; ---------------------------  
- 	; 
- 	mov ax, [esp + A]  ; pongo en el ax e
- 	mov ebx, 10 
- 	mov esi, 30 
- 	call itoa   
- 	
- 	mov eax, 4 	; EAX -> write  
- 	mov ebx, 1 	; EBX -> input  
- 	mov ecx, buffer_output ; ECX -> valor que se va a imprimir     
- 	mov edx, len_output	; EDX -> largo de lo que voy a escribir 
- 	int 0x80 	; llamada al sistema operativo      
- 	; ---------------------------  
- 
  	  	; ---------------------------  
   	mov eax, 1 
  	int 0x80 

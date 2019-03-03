@@ -1,3 +1,3 @@
-begin 
-A := ( 0 | 4 | 5 ) ;
+begin
+A := ( B | C | D ) ;
 end

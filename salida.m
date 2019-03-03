@@ -1,4 +1,6 @@
 Declare A,Integer,
-Store 700,A,
-Write A,Integer,
+Declare B,Integer,
+Declare C,Integer,
+Declare D,Integer,
+Store ,A,
 Halt ,,

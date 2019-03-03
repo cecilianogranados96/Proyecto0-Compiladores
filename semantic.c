@@ -39,7 +39,7 @@ void read_id(REG_EXPRESION in)
 {
     /* Genera la instruccion para leer */
     generate("Read", in.name, "Integer", "");
-    
+
     //**********ENSAMBLADOR**********************************************************************
     char *message = "\t; Leer de consola -> read \n \
 	; ------------------------  \n \
@@ -62,15 +62,15 @@ void read_id(REG_EXPRESION in)
 	; ---------------------------  \n \n ";
 	fprintf(out_ensambler, message, in.name);
     //**********ENSAMBLADOR**********************************************************************
-    
+
 }
 
 void write_expr(REG_EXPRESION out)
 {
     /* Genera la instruccion para escribir */
     generate("Write",  extract(&out), "Integer", "");
-    
-    //**********ENSAMBLADOR********************************************************************** 
+
+    //**********ENSAMBLADOR**********************************************************************
     char *message = "\t; Escribir en consola -> write \n \
 	; ---------------------------  \n \
 	; \n \
@@ -87,9 +87,9 @@ void write_expr(REG_EXPRESION out)
 	; ---------------------------  \n \n ";
 	fprintf(out_ensambler, message, out.name);
     //**********ENSAMBLADOR**********************************************************************
-    
-    
-    
+
+
+
 }
 
 REG_EXPRESION gen_infix(REG_EXPRESION e1, char *op, REG_EXPRESION e2)
@@ -113,7 +113,7 @@ REG_EXPRESION gen_infix(REG_EXPRESION e1, char *op, REG_EXPRESION e2)
     if ( e2.clase == ID) check_id( extract(&e2));
 
     //CONSTANT FOLDING SI SON DOS ENTEROS SEGUIDOS LOS CALCULA Y CONSTRUYE UNA NUEVA EXPRESION
-        
+
     if (e1.clase == INTLITERAL && e2.clase == INTLITERAL){
             e_rec.clase = INTLITERAL;
             strcpy(e_rec.name, cadTemp);
@@ -125,7 +125,7 @@ REG_EXPRESION gen_infix(REG_EXPRESION e1, char *op, REG_EXPRESION e2)
                 strcpy(arr, "add");
             }
             sprintf(cadTemp, "%d", e_rec.value);
-            
+
             //**********ENSAMBLADOR**********************************************************************
             char *messageTwoLi = "\t; %s Literal, result \n \
             ; ---------------------------  \n \
@@ -134,15 +134,15 @@ REG_EXPRESION gen_infix(REG_EXPRESION e1, char *op, REG_EXPRESION e2)
             ; ---------------------------  \n \n ";
             fprintf(out_ensambler, messageTwoLi, arr, e_rec.name, cadTemp);
             //**********ENSAMBLADOR**********************************************************************
-            
+
             strcpy(e_rec.name, cadTemp);
             return e_rec;
 	}else{
-    
+
         check_id(cadTemp);
         generate(cadOp, e1.name,  e2.name, cadTemp);
         strcpy(reg.name, cadTemp);
-     
+
         //**********ENSAMBLADOR**********************************************************************
         char *message;
         if (e1.clase == LITERALEXPR || e2.clase == LITERALEXPR){
@@ -161,26 +161,42 @@ REG_EXPRESION gen_infix(REG_EXPRESION e1, char *op, REG_EXPRESION e2)
                 %s eax, ebx \n \
                 mov [esp + %s], ax \n \
                 ; ---------------------------  \n \n ";
-        }  
+        }
         fprintf(out_ensambler, message, op[0], e1.name, e2.name, op[0], e_rec.name);
         //**********ENSAMBLADOR**********************************************************************
 
-        
+
         return reg;
-    }    
+    }
 }
 
 REG_EXPRESION conditional_expressions(REG_EXPRESION e1, REG_EXPRESION e2, REG_EXPRESION e3){
 
   REG_EXPRESION e_rec;
+  static unsigned int numTempN = 1;
+  static unsigned int numTempK = 1;
   char cadTemp[MAXIDLEN] ="Temp&";
-  strcpy(e_rec.name, cadTemp);
-  if(e1.value == 0){
+  char cadNumN[MAXIDLEN];
+  char cadNumK[MAXIDLEN];
+  sprintf(cadNumN, "%d", numTempN);
+  numTempN++;
+  strcat(cadTemp, cadNumN);
+
+  strcpy(e1.name, cadTemp);
+  sprintf(cadTemp, "%d", e1.value);
+  printf("IF_%s %s\n",cadTemp,cadTemp);
+
+  printf("THEN_\n%s\n",e2.name);
+
+  printf("ELSE_\n%s\n",e3.name);
+
+  printf("END_IF\n");
+/*  if(e1.value == 0){
     e_rec.value = e3.value;
   }else{
     e_rec.value = e2.value;
   }
   sprintf(cadTemp, "%d", e_rec.value);
   strcpy(e_rec.name, cadTemp);
-  return e_rec;
+  return e_rec;*/
 }
