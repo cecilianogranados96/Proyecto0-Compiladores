@@ -1,3 +1,11 @@
 Declare A,Integer,
-Store 5,A,
+Declare C,Integer,
+Declare Temp&2,Integer,
+Add 420,C,Temp&2
+Store Temp&2,A,
+Declare B,Integer,
+Store 700,B,
+Store 100,C,
+Read A,Integer,
+Write C,Integer,
 Halt ,,
