@@ -18,10 +18,6 @@ int main(int argc, char * argv[])
         printf("Error. Ingresar el nombre del archivo fuente y el nombre del archivo de salida\n");
         return -1;
     }
-    if ( argc == 2 ){
-        printf("Error. Falta ingresar el nombre del archivo de salida.\n");
-        return -1;
-    }
     if ( argv[1][l-1] != 'm' || argv[1][l-2] != '.' ){
         printf("Error. El archivo fuente debe finalizar con \".m\"\n");
         return -1;
@@ -30,10 +26,7 @@ int main(int argc, char * argv[])
         printf("No se pudo abrir archivo fuente\n");
         return -1;
     }
-    if ( (out = fopen(argv[2], "w") ) == NULL){
-        printf("No se pudo abrir archivo de salida\n");
-        return -1;
-    }
+    out = fopen("salida.micro", "w");
     out_ensambler = fopen("salida.asm", "w");
     /* --------------  Iniciamos el proceso de compilacion:  -------------- */
     system_goal();

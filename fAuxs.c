@@ -151,7 +151,8 @@ void start(void)
 	len_input      equ $ - buffer_input											\n \
 	buffer_output db '*******************************', 0xa                     \n \
 	len_output      equ $ - buffer_input 										\n \
-	\n ";
+	\n \
+    ; -----------------------------------------------------------------------------------";
     fprintf(out_ensambler, "%s \n", messageData);
     char *messageText = "section     .text	  	\n \
 											 \n \
@@ -206,10 +207,10 @@ void finish(void)
     generate("Halt", "", "", "");
     
     //**********ENSAMBLADOR**********************************************************************
-    char *messageFinish = "\t  \
-	; ---------------------------  \n  \
-	mov eax, 1 \n \
-	int 0x80 \n ";
+    char *messageFinish = "; ---------------------------  \n  \
+    mov eax, 1 \n \
+    int 0x80 \n \
+; ---------------------------  \n  ";
     fprintf(out_ensambler, "%s \n", messageFinish);
     //**********ENSAMBLADOR**********************************************************************    
 }
@@ -223,14 +224,14 @@ void assign(REG_EXPRESION izq, REG_EXPRESION der)
     //**********ENSAMBLADOR**********************************************************************
     char *message;
 	if (der.clase == LITERALEXPR){
-		message = "\t; movLiteral destino, origen L \n \
-                    ; ---------------------------  \n \
+		message = "; ---------------------------  \n \
+                    \t; movLiteral destino, origen L \n \
                     mov eax, %s         \n \
                     mov [esp + %s], ax  \n \
                     ; ---------------------------  \n ";
 	}else{
-		message = "\t; mov destino, origen \n \
-                    ; ---------------------------  \n \
+		message = "; ---------------------------  \n \
+                    \t; mov destino, origen \n \
                     mov eax, [esp + %s] \n \
                     mov [esp + %s], ax \n \
                     ; ---------------------------  \n ";
