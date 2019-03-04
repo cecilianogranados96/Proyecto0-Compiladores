@@ -1,3 +1,11 @@
-begin begin 1 beginbeginbegin := caminando (4 + 5 - 91) - (21 + 5 + 8); 
+begin
 
-end begin end begin end begin end
+READ ( C ) ;
+
+A := 5 + C ;
+
+B := 5 - 5 ;
+
+A := ( B | A := 4 | A := 6 ) ;
+
+end

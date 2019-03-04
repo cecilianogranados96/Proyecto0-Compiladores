@@ -46,8 +46,6 @@ void write_expr(REG_EXPRESION out)
 {
     /* Genera la instruccion para escribir */
     generate("Write",  extract(&out), "Integer", "");
-
-
 }
 
 REG_EXPRESION gen_infix(REG_EXPRESION e1, char *op, REG_EXPRESION e2)
@@ -98,7 +96,7 @@ REG_EXPRESION conditional_expressions(REG_EXPRESION e1, REG_EXPRESION e2, REG_EX
   REG_EXPRESION e_rec;
   static unsigned int numTempN = 1;
   static unsigned int numTempK = 1;
-  char cadTemp[MAXIDLEN] ="Temp&";
+  char cadTemp[MAXIDLEN] ="Temp_C&";
   char cadNumN[MAXIDLEN];
   char cadNumK[MAXIDLEN];
   sprintf(cadNumN, "%d", numTempN);
@@ -107,6 +105,7 @@ REG_EXPRESION conditional_expressions(REG_EXPRESION e1, REG_EXPRESION e2, REG_EX
 
   strcpy(e1.name, cadTemp);
   sprintf(cadTemp, "%d", e1.value);
+    
   printf("IF_%s %s\n",cadTemp,cadTemp);
 
   printf("THEN_\n%s\n",e2.name);
@@ -122,4 +121,5 @@ REG_EXPRESION conditional_expressions(REG_EXPRESION e1, REG_EXPRESION e2, REG_EX
   sprintf(cadTemp, "%d", e_rec.value);
   strcpy(e_rec.name, cadTemp);
   return e_rec;*/
+    return e_rec;
 }

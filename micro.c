@@ -5,7 +5,6 @@
 #include "headers/parser.h"
 FILE * in;
 FILE * out;
-FILE * out_ensambler;
 RegTS TS[1000] = { {"begin", BEGIN}, {"end", END}, {"read", READ}, {"write", WRITE},{"scaneof", SCANEOF}, {"$", 99} };
 char token_buffer[MAXIDLEN];
 TOKEN token;
@@ -27,7 +26,6 @@ int main(int argc, char * argv[])
         return -1;
     }
     out = fopen("salida.micro", "w");
-    out_ensambler = fopen("salida.asm", "w");
     /* --------------  Iniciamos el proceso de compilacion:  -------------- */
     system_goal();
     /* --------------  Terminado el proceso, cerramos los archivos:  -------------- */

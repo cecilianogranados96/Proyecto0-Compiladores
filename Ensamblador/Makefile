@@ -5,4 +5,4 @@ run:
 	./Traslate
     
 com2:
-	gcc -o Traslate Traslate.c -w
+	gcc -o Traslate ensamblador.c -w
