@@ -11,7 +11,7 @@ TOKEN token;
 int flagToken = 0;
 int main(int argc, char * argv[])
 {
-	printf("COMPILADOR DE MICRO\n\n\n");
+    printf("\n\n*******************COMPILADOR DE MICRO*******************\n\n");
     int l = strlen(argv[1]);
     if ( argc == 1 ){
         printf("Error. Ingresar el nombre del archivo fuente y el nombre del archivo de salida\n");
@@ -32,15 +32,18 @@ int main(int argc, char * argv[])
     fclose(in);
     fclose(out);
     
-    
+      
     system("gcc -o Traductor Ensamblador/ensamblador.c -w");
+
     system("./Traductor");
     
     system("nasm -f elf bin/salida.asm");
-    system("ld -m elf_i386 bin/salida.o -o salida");
-    printf("EJECUTANDO EL ENSAMBLADOR\n\n\n");
-    system("./salida");
+
+    system("ld -m elf_i386 bin/salida.o -o bin/salida");
     
+    printf("\n\n*******************EJECUTANDO ENSAMBLADOR*******************\n\n");
+    system("./bin/salida");
+    printf("\n\n");
     
     
     return 0;

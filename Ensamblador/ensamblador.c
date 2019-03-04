@@ -248,5 +248,5 @@ int main(){
     const char*input=   "bin/salida.micro";
     const char*output=  "bin/salida.asm";
     Ensamblar(input,output);
-    return 1;
+    return 0;
 }
