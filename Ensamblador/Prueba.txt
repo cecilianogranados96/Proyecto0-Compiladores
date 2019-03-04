@@ -1,5 +1,0 @@
-Declare A,integer,
-Read A
-Add A,1,A
-Write A
-Halt,,

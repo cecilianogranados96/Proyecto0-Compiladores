@@ -245,8 +245,8 @@ void getDirecc(char op1_temp[],char op1_buffer[]){
 }
 
 int main(){
-    const char*input="Prueba.txt";
-    const char*output="Salida.asm";
+    const char*input=   "bin/salida.micro";
+    const char*output=  "bin/salida.asm";
     Ensamblar(input,output);
     return 1;
 }

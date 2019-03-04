@@ -25,11 +25,23 @@ int main(int argc, char * argv[])
         printf("No se pudo abrir archivo fuente\n");
         return -1;
     }
-    out = fopen("salida.micro", "w");
+    out = fopen("bin/salida.micro", "w");
     /* --------------  Iniciamos el proceso de compilacion:  -------------- */
     system_goal();
     /* --------------  Terminado el proceso, cerramos los archivos:  -------------- */
     fclose(in);
     fclose(out);
+    
+    
+    system("gcc -o Traductor Ensamblador/ensamblador.c -w");
+    system("./Traductor");
+    
+    system("nasm -f elf bin/salida.asm");
+    system("ld -m elf_i386 bin/salida.o -o salida");
+    printf("EJECUTANDO EL ENSAMBLADOR\n\n\n");
+    system("./salida");
+    
+    
+    
     return 0;
 }
