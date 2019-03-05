@@ -121,14 +121,18 @@ void Traducir(FILE *in,FILE *out,FILE *code){
         }else if (opN=isIf(inst_buffer)){
             varN=opN-8000;
             opN=opN/1000;
-            fprintf(code,inst[opN-1],op1_buffer,IfCont,IfLev);
+            if (isRepeated(op1_buffer))
+                getDirecc(op1_temp,op1_buffer);
+            else
+                strcpy(op1_temp,op1_buffer);
+            fprintf(code,inst[opN-1],op1_temp,IfCont,IfLev);
             if(IfLev==0)
                 IfCont++;
             IfLev++;
         }else if (opN=isThen(inst_buffer)){
             fprintf(code,inst[opN-1],op1_buffer,IfCont,IfLev);
         }else if (opN=isElse(inst_buffer)){
-            fprintf(code,inst[opN-1],op1_buffer,IfCont,IfLev);
+            fprintf(code,inst[opN-1],op1_buffer,IfCont,IfLev,IfCont,IfLev);
         }else if (opN=isEndif(inst_buffer)){
             fprintf(code,inst[opN-1],op1_buffer,IfCont,IfLev);
             IfLev--;
