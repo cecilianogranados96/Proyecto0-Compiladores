@@ -12,7 +12,7 @@ const char *inst[11]={"    %s resd 1\n",//declare op
                     "    mov eax, %s\n    mov ebx, %s\n    sub eax, ebx \n    mov [%s], eax \n",//sub op1,op2,op3: op1-op2 a op3
                     "    mov eax, %s\n    mov ebx, %s\n    add eax, ebx \n    mov [%s], eax \n",//add op1,op2,op3: op1+op2 a op3
                     "    call quit \n",//halt
-                    "    mov eax, %s\n    cmp eax, 0 \n    jz else_N_%d_L_%d \n",//if op1 IfCont IfLev
+                    "    mov eax, %s\n    cmp eax, 0 \n    je else_N_%d_L_%d \n",//if op1 IfCont IfLev
                     "then_N_%d_L_%d: \n", //then IfCont IfLev
                     "    jmp endif_N_%d_L_%d\nelse_N_%d_L_%d: \n",//else IfCont IfLev
                     "endif_N_%d_L_%d: \n"}; //endif  IfCont IfLev
