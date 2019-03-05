@@ -1,6 +1,10 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
+#include <signal.h>
+#include <stdlib.h>
+
+
 #include "headers/micro.h"
 #include "headers/parser.h"
 FILE * in;
@@ -31,11 +35,10 @@ int main(int argc, char * argv[])
     /* --------------  Terminado el proceso, cerramos los archivos:  -------------- */
     fclose(in);
     fclose(out);
-    
-      
-    system("gcc -o Traductor Ensamblador/ensamblador.c -w");
+        
+    system("gcc -o Ensamblador/Traductor Ensamblador/ensamblador.c -w");
 
-    system("./Traductor");
+    system("./Ensamblador/Traductor");
     
     system("nasm -f elf bin/salida.asm");
 
@@ -44,7 +47,6 @@ int main(int argc, char * argv[])
     printf("\n\n*******************EJECUTANDO ENSAMBLADOR*******************\n\n");
     system("./bin/salida");
     printf("\n\n");
-    
     
     return 0;
 }
