@@ -1,4 +1,8 @@
-Declare A,Integer,
-Store 700,A,
-Write A,Integer,
+Declare C,Integer,
+Read C,Integer,
+Declare B,Integer,
+Declare Temp_1,Integer,
+Add 300,C,Temp_1
+Store Temp_1,B,
+Write B,Integer,
 Halt ,,

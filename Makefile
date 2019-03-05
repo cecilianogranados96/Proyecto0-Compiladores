@@ -4,7 +4,7 @@ Compilador_Micro: micro.o Parser.o Scanner.o semantic.o fAuxs.o
 	gcc -o micro_compiler micro.o Parser.o Scanner.o semantic.o fAuxs.o
     
 micro.o: micro.c headers/micro.h headers/parser.h
-	gcc -c micro.c
+	gcc -c micro.c -w
 
 parser.o: Parser.c headers/Parser.h headers/semantic.h headers/fAuxs.h headers/micro.h
 	gcc -c Parser.c

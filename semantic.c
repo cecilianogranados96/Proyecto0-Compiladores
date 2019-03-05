@@ -53,7 +53,7 @@ REG_EXPRESION gen_infix(REG_EXPRESION e1, char *op, REG_EXPRESION e2)
     /* Genera la instruccion para una operacion infija y construye un registro semantico con el result */
     REG_EXPRESION reg,e_rec;
     static unsigned int numTemp = 1;
-    char cadTemp[MAXIDLEN] ="Temp&";
+    char cadTemp[MAXIDLEN] ="Temp_";
     char cadNum[MAXIDLEN];
     char cadOp[MAXIDLEN];
     char arr[5];

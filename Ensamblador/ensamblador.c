@@ -118,7 +118,6 @@ void Traducir(FILE *in,FILE *out,FILE *code){
             fprintf(code,inst[opN-1],op1_temp,op2_temp,op3_buffer);
         }else if (opN=isHalt(inst_buffer)){
             fprintf(code,inst[opN-1]);
-            printf(inst[opN-1]);
         }else if (opN=isIf(inst_buffer)){
             varN=opN-8000;
             opN=opN/1000;
@@ -245,8 +244,8 @@ void getDirecc(char op1_temp[],char op1_buffer[]){
 }
 
 int main(){
-    const char*input=   "bin/salida.micro";
-    const char*output=  "bin/salida.asm";
+     const char*input=   "bin/salida.micro";
+    const char*output= "bin/salida.asm";
     Ensamblar(input,output);
-    return 0;
+    return 1;
 }

@@ -1,8 +1,6 @@
 begin
-A := 20 + 400 + C ;
-B := 300 + 400 ;
-C := 100 ;
-READ ( A ) ;
-WRITE ( C ) ;
+READ ( C ) ;
+B := 300 + C ;
+WRITE ( B ) ;
 -- comentario
 end
